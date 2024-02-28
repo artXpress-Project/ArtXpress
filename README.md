@@ -99,14 +99,17 @@ artXpress is an online platform for art enthusiasts to explore and purchase artw
       
       I. **Install MySQL Server**:
        - If MySQL Server is not already installed on your system, download and install it from the official MySQL website: [MySQL Downloads](https://dev.mysql.com/downloads/)
+   
       II. **Start MySQL Server**:
        - Start the MySQL server on your local machine. The method to start the server may vary depending on your operating system.
+
       III. **Create a Database**:
        - Once the MySQL server is running, you can create a new database for artXpress. You can do this via the MySQL command-line interface (CLI) or a graphical user interface (GUI) tool like MySQL Workbench.
        - Example command in the MySQL CLI:
          ```sql
          CREATE DATABASE artxpress_db;
          ```
+
       IV. **Create Database User**:
        - Create a new user and grant necessary privileges to the newly created database. Replace `username` and `password` with your desired values.
        - Example command in the MySQL CLI:
@@ -115,6 +118,7 @@ artXpress is an online platform for art enthusiasts to explore and purchase artw
          GRANT ALL PRIVILEGES ON artxpress_db.* TO 'username'@'localhost';
          FLUSH PRIVILEGES;
          ```
+
       V. **Database Configuration**:
        - Open the `application.properties` file located in the `src/main/resources` directory of the backend project.
        - Update the database connection settings to match the database name, username, and password you just created:
@@ -124,6 +128,7 @@ artXpress is an online platform for art enthusiasts to explore and purchase artw
          spring.datasource.password=password
          spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
          ```
+
       VI. **Run the Spring Boot Application**:
        - Build and run the Spring Boot application as described in the previous instructions.
       
