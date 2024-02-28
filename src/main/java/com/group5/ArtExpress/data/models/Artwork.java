@@ -18,11 +18,11 @@ public class Artwork {
     @Column(nullable = false, name="title")
     private String title;
 
-    @Column(nullable = false, name="genre")
+    @JoinColumn(nullable = false, name="genre")
     @ManyToOne
     private Genre genre;
 
-    @Column(nullable = false, name="description")
+    @JoinColumn(nullable = false, name="description")
     private String description;
     @ManyToOne
     private Artist artist;
