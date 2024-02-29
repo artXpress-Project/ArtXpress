@@ -3,6 +3,7 @@ package com.group5.ArtExpress.data.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +25,8 @@ public class Comment {
     @Column(nullable = false, name="message")
     private String message;
 
-    @Column(nullable = false, name="dateTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    @Column(name="dateTime")
     private LocalDateTime dateTime;
 }

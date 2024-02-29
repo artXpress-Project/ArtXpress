@@ -22,7 +22,7 @@ public class ArtistConfirmation {
 
     private String token;
 
-    @OneToOne(targetEntity = Collector.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = Artist.class, fetch = FetchType.EAGER)
     private Artist artist;
 
     @Temporal(TemporalType.TIMESTAMP)
