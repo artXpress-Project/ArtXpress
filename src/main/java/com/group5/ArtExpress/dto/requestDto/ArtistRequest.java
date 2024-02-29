@@ -2,6 +2,8 @@ package com.group5.ArtExpress.dto.requestDto;
 
 import com.group5.ArtExpress.data.models.Artwork;
 import com.group5.ArtExpress.data.models.Location;
+import com.group5.ArtExpress.data.models.State;
+import jakarta.persistence.Column;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,7 +18,9 @@ public class ArtistRequest {
     private String businessName;
     private String bio;
     private String phoneNumber;
-    private Location location;
+    private State state;
+    private String lga;
+    private String address;
     private List<Artwork> artworks;
     private boolean isEnabled;
     private LocalDateTime dateTime;

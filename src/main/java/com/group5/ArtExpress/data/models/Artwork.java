@@ -2,6 +2,7 @@ package com.group5.ArtExpress.data.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 
 import java.time.LocalDateTime;
@@ -45,6 +46,8 @@ public class Artwork {
     @Column(nullable = false, name="likes")
     private int likes;
 
-    @Column(nullable = false, name="uploadDateTime")
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    @Column(name="uploadDateTime")
     private LocalDateTime uploadDateTime;
 }
