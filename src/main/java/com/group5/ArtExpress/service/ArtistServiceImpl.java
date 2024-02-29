@@ -1,5 +1,6 @@
 package com.group5.ArtExpress.service;
 
+
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 import com.group5.ArtExpress.customException.TokenWasNotFoundException;
@@ -37,7 +38,9 @@ public class ArtistServiceImpl implements ArtistService{
         ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
         artistConfirmationRepo.save(artistConfirmation);
         return newArtist;
+
     }
+
 
     @Override
     public Boolean verifyToken(String token) {
