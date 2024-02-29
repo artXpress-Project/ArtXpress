@@ -17,13 +17,19 @@ public class Artist extends User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, name="businessName")
+    @Column(nullable = false,
+            name="businessName",
+            unique = true
+    )
     private String businessName;
 
     @Column(nullable = false, name="bio")
     private String bio;
 
-    @Column(nullable = false, name = "phoneNumber")
+    @Column(nullable = false,
+            name = "phoneNumber",
+            unique = true
+    )
     private String phoneNumber;
 
     @Column(nullable = false, name = "location")
