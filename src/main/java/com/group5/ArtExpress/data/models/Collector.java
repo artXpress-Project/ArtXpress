@@ -24,4 +24,7 @@ public class Collector extends User {
 
     @Column(nullable = false, name="dateTime")
     private LocalDateTime dateTime;
+
+    @Column(nullable = false, name="isEnabled")
+    private boolean isEnabled;
 }
