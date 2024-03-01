@@ -1,6 +1,7 @@
 package com.group5.ArtExpress.service;
 
 
+import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 import com.group5.ArtExpress.customException.TokenWasNotFoundException;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static com.group5.ArtExpress.utils.Mapper.map;
 
 public class ArtistServiceImpl implements ArtistService{
+    @Autowired
+    private EmailService emailService;
 
 
     @Autowired
@@ -37,6 +40,8 @@ public class ArtistServiceImpl implements ArtistService{
         Artist newArtist = artistRepo.save(artist);
         ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
         artistConfirmationRepo.save(artistConfirmation);
+
+//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
         return newArtist;
 
     }

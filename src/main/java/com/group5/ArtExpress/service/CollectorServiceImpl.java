@@ -1,5 +1,6 @@
 package com.group5.ArtExpress.service;
 
+import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.CollectorConfirmation;
 import com.group5.ArtExpress.customException.TokenWasNotFoundException;
@@ -12,9 +13,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 import java.time.LocalDateTime;
 
 public class CollectorServiceImpl implements CollectorService{
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private CollectorRepo collectorRepo;
 
@@ -43,6 +47,8 @@ public class CollectorServiceImpl implements CollectorService{
 
         CollectorConfirmation confirmation = new CollectorConfirmation(collector);
         collectorConfirmationRepo.save(confirmation);
+
+//        emailService.sendHtmlEmailWithEmbeddedFiles(collector.getFirstName(),collector.getEmail(),confirmation.getToken());
 
         return collects;
 
