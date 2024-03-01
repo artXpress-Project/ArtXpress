@@ -10,7 +10,13 @@ import com.group5.ArtExpress.customException.TokenWasNotFoundException;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
+import com.group5.ArtExpress.repository.ArtistRepo;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static com.group5.ArtExpress.utils.Mapper.map;
 
 @Service
 public class ArtistServiceImpl implements ArtistService{

@@ -9,6 +9,7 @@ import com.group5.ArtExpress.customException.TokenWasNotFoundException;
 import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.repository.CollectorConfirmationRepo;
 import com.group5.ArtExpress.repository.CollectorRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,10 @@ public class CollectorServiceImpl implements CollectorService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailVerificationService emailVerificationService;
+    @Autowired
+    private CollectorConfirmationRepo collectorConfirmationRepo;
     @Override
     public Collector registerCollector(CollectorRequest collectorRequest) {
         emailVerificationService.ifEmailAlreadyExist(collectorRequest.getEmail());
@@ -47,20 +52,22 @@ public class CollectorServiceImpl implements CollectorService{
         collectorConfirmationRepo.save(confirmation);
 
 //        emailService.sendHtmlEmailWithEmbeddedFiles(collector.getFirstName(),collector.getEmail(),confirmation.getToken());
-
         return collects;
 
 
-    public Collector registerArtist(CollectorRequest collectorRequest) {
-        Collector collector = new Collector();
 
-
-        return null;
     }
+
+
 
     @Override
     public Boolean verifyToken(String token) {
-        return null;
+        CollectorConfirmation confirmation = collectorConfirmationRepo.findByToken(token);
+        if(confirmation == null) throw new TokenWasNotFoundException("Could not find token");
+        Collector collector = collectorRepo.findByEmailIgnoreCase(confirmation.getCollector().getEmail());
+        collector.setEnabled(true);
+        collectorRepo.save(collector);
+        return Boolean.TRUE;
     }
 
     @Override
