@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CollectorService {
-    Collector registerArtist(CollectorRequest collectorRequest);
+    Collector registerCollector(CollectorRequest collectorRequest);
     Boolean verifyToken(String token);
 
     String login(LoginRequest loginRequest);

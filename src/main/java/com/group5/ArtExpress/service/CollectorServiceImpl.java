@@ -18,7 +18,7 @@ public class CollectorServiceImpl implements CollectorService{
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
-    public Collector registerArtist(CollectorRequest collectorRequest) {
+    public Collector registerCollector(CollectorRequest collectorRequest) {
         Collector collector = new Collector();
 
         return null;
