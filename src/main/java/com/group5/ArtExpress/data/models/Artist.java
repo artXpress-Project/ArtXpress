@@ -3,7 +3,6 @@ package com.group5.ArtExpress.data.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.CreatedDate;
 
 
 import java.time.LocalDateTime;
@@ -44,8 +43,6 @@ public class Artist extends User {
     @Column(nullable = false, name = "isEnabled")
     private boolean isEnabled;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    @Column(name = "dateTime")
+    @Column(nullable = false, name = "dateTime")
     private LocalDateTime dateTime;
 }

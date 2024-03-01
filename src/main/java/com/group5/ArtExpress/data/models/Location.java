@@ -1,7 +1,6 @@
 package com.group5.ArtExpress.data.models;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 
@@ -9,7 +8,7 @@ import lombok.Data;
 public class Location {
 
     @Column(nullable = false, name="state")
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private State state;
 
     @Column(nullable = false, name="lga")

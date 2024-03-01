@@ -3,7 +3,6 @@ package com.group5.ArtExpress.data.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.CreatedDate;
 
 
 import java.time.LocalDateTime;
@@ -23,8 +22,7 @@ public class Collector extends User {
     @Column(nullable = false, name="address")
     private String address;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
+    @Column(nullable = false, name="dateTime")
     private LocalDateTime dateTime;
 
     @Column(nullable = false, name="isEnabled")
