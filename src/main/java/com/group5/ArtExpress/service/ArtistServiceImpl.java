@@ -1,6 +1,12 @@
 package com.group5.ArtExpress.service;
 
 
+
+import com.group5.ArtExpress.emailService.EmailService;
+import com.group5.ArtExpress.emailService.EmailVerificationService;
+import com.group5.ArtExpress.confirmation.ArtistConfirmation;
+import com.group5.ArtExpress.customException.TokenWasNotFoundException;
+
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
@@ -8,14 +14,47 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ArtistServiceImpl implements ArtistService{
+    @Autowired
+    private EmailService emailService;
+
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private ArtistRepo artistRepo;
+
+    @Autowired
+    private ArtistConfirmationRepo artistConfirmationRepo;
+
+    @Autowired
+    private EmailVerificationService emailVerificationService;
     @Override
     public Artist register(ArtistRequest request) {
-        return null;
+        emailVerificationService.verifyEmailFormat(request.getEmail());
+        emailVerificationService.ifEmailAlreadyExist(request.getEmail());
+        Artist artist = modelMapper.map(request, Artist.class);
+        map(request, artist);
+        Artist newArtist = artistRepo.save(artist);
+        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
+        artistConfirmationRepo.save(artistConfirmation);
+
+//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
+        return newArtist;
+
     }
+
 
     @Override
     public Boolean verifyToken(String token) {
-        return null;
+
+        ArtistConfirmation artistConfirmation = artistConfirmationRepo.findByToken(token);
+        if(artistConfirmation == null) throw new TokenWasNotFoundException("Could not find token");
+        Artist artist = artistRepo.findByEmailIgnoreCase(artistConfirmation.getArtist().getEmail());
+        artist.setEnabled(true);
+        artistRepo.save(artist);
+        return Boolean.TRUE;
+
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.group5.ArtExpress;
 
+import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.State;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
+import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
 import com.group5.ArtExpress.service.ArtistService;
@@ -15,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class ArtistServiceImplTest {
+    @Autowired
+    EmailService emailService;
+
 
     @Autowired
     ArtistRepo artistRepo;
@@ -40,18 +45,22 @@ public class ArtistServiceImplTest {
 
     @Test
     public void canRegisterAnArtist(){
+        Artist artist = new Artist();
+        artist.setEmail("ikennajames03@gmail.com");
         artistRequest.setFirstName("kelvin");
         artistRequest.setLastName("ekene");
         artistRequest.setPassword("kens");
-        artistRequest.setEmail("ekenekelvin@gmail.com");
+        artistRequest.setEmail("ikennajames03@gmail.com");
         artistRequest.setBio("errrtttgfd");
         artistRequest.setState(State.ABIA);
-        artistRequest.setAddress("NO 98 ");
+        artistRequest.setAddress("NO 98");
         artistRequest.setLga("ghf rhrgfgd sd");
         artistRequest.setBusinessName("ghfyrhdd");
         artistRequest.setPhoneNumber("09567456382");
-        Artist artist = artistService.register(artistRequest);
-        assertNotNull(artist);
+//        ArtistConfirmation confirmation = new ArtistConfirmation(artist);
+//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(), artist.getEmail(), confirmation.getToken());
+        Artist artists = artistService.register(artistRequest);
+        assertNotNull(artists);
     }
 
 }
