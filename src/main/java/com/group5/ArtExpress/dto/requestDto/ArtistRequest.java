@@ -19,7 +19,7 @@ public class ArtistRequest {
     private String phoneNumber;
     private State state;
     private String lga;
-    private String address;
+    private String Address;
     private List<Artwork> artworks;
     private boolean isEnabled;
     private LocalDateTime dateTime;

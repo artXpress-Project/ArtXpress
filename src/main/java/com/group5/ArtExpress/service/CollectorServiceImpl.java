@@ -32,8 +32,10 @@ public class CollectorServiceImpl implements CollectorService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private EmailVerificationService emailVerificationService;
+
     @Autowired
     private CollectorConfirmationRepo collectorConfirmationRepo;
     @Override
@@ -53,9 +55,6 @@ public class CollectorServiceImpl implements CollectorService{
 
 //        emailService.sendHtmlEmailWithEmbeddedFiles(collector.getFirstName(),collector.getEmail(),confirmation.getToken());
         return collects;
-
-
-
     }
 
 
