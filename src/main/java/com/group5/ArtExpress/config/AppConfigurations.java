@@ -24,4 +24,16 @@ public class AppConfigurations {
         return new ModelMapper();
     }
 
+//    @Bean
+//    public EmailService emailService(JavaMailSender emailSender, TemplateEngine templateEngine){
+//        return new EmailServiceImpl(emailSender,templateEngine);
+//    }
+
+//    @Bean
+//    public JavaMailSender javaMailSender() {
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//        return mailSender;
+//    }
+
+
 }
