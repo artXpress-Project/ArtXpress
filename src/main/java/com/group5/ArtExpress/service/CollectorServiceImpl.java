@@ -54,9 +54,10 @@ public class CollectorServiceImpl implements CollectorService{
         collectorConfirmationRepo.save(confirmation);
 
 //        emailService.sendHtmlEmailWithEmbeddedFiles(collector.getFirstName(),collector.getEmail(),confirmation.getToken());
-
         return collects;
     }
+
+
 
     @Override
     public Boolean verifyToken(String token) {
