@@ -1,5 +1,7 @@
 package com.group5.ArtExpress.config;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.group5.ArtExpress.service.ArtistService;
 import com.group5.ArtExpress.service.ArtistServiceImpl;
 import com.group5.ArtExpress.service.CollectorService;
@@ -24,6 +26,13 @@ public class AppConfigurations {
     @Value("${mail.api.url}")
     private String mailServiceUrl;
 
+    @Value("${cloud.api.name}")
+    private String cloudApiName;
+    @Value("${cloud.api.key}")
+    private String cloudApiKey;
+    @Value("${cloud.api.secret}")
+    private String cloudApiSecret;
+
     @Bean
     public CollectorService collectorService(){
         return new CollectorServiceImpl();
@@ -41,6 +50,19 @@ public class AppConfigurations {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloudinary = new Cloudinary(
+                ObjectUtils.asMap(
+                        "cloud_name", getCloudApiName(),
+                        "api_key", getCloudApiKey(),
+                        "api_secret", getCloudApiSecret()
+                )
+        );
+        return cloudinary;
+
     }
 //    @Bean
 //    public EmailService emailService(JavaMailSender emailSender, TemplateEngine templateEngine){
