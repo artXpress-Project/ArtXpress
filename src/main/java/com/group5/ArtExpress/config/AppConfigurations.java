@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Getter
@@ -52,6 +51,7 @@ public class AppConfigurations {
         return new RestTemplate();
     }
 
+
     @Bean
     public Cloudinary cloudinary() {
         Cloudinary cloudinary = new Cloudinary(
@@ -64,6 +64,7 @@ public class AppConfigurations {
         return cloudinary;
 
     }
+
 //    @Bean
 //    public EmailService emailService(JavaMailSender emailSender, TemplateEngine templateEngine){
 //        return new EmailServiceImpl(emailSender,templateEngine);

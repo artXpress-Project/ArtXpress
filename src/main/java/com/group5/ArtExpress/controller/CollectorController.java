@@ -2,6 +2,8 @@ package com.group5.ArtExpress.controller;
 
 import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
+import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.http.HttpResponse;
 import com.group5.ArtExpress.service.CollectorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,27 @@ public class CollectorController {
                         .build()
         );
 
+    }
+    @PostMapping("/login")
+    public ResponseEntity<HttpResponse> login(@RequestBody LoginRequest loginRequest){
+        MessageResponse messageResponse = collectorService.login(loginRequest);
+        try {
+            return ResponseEntity.ok().body(
+                    HttpResponse.builder()
+                            .timeStamp(LocalDateTime.now().toString())
+                            .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
+                            .build()
+            );
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    HttpResponse.builder()
+                            .timeStamp(LocalDateTime.now().toString())
+                            .data(Map.of("error", HttpStatus.UNAUTHORIZED.value()))
+                            .status(HttpStatus.UNAUTHORIZED)
+                            .statusCode(HttpStatus.UNAUTHORIZED.value())
+                            .build()
+            );
+        }
     }
 
 

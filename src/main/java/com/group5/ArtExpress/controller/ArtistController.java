@@ -4,6 +4,8 @@ import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
 import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
+import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.http.HttpResponse;
 import com.group5.ArtExpress.service.ArtXpressMediaService;
 import com.group5.ArtExpress.service.ArtXpressMediaServiceImpl;
@@ -73,4 +75,26 @@ public class ArtistController {
 //        UploadArtResponse response = artXpressMediaService.uploadArt(uploadArtRequest);
 //        return ResponseEntity.
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<HttpResponse> login(@RequestBody LoginRequest loginRequest){
+        MessageResponse messageResponse = artistService.login(loginRequest);
+        try {
+            return ResponseEntity.ok().body(
+                    HttpResponse.builder()
+                            .timeStamp(LocalDateTime.now().toString())
+                            .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
+                            .build()
+            );
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    HttpResponse.builder()
+                            .timeStamp(LocalDateTime.now().toString())
+                            .data(Map.of("error", HttpStatus.UNAUTHORIZED.value()))
+                            .status(HttpStatus.UNAUTHORIZED)
+                            .statusCode(HttpStatus.UNAUTHORIZED.value())
+                            .build()
+            );
+        }
+     }
 }

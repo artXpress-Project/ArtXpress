@@ -2,9 +2,13 @@ package com.group5.ArtExpress.service;
 
 
 
+
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+
 import com.group5.ArtExpress.dto.requestDto.SendMailRequest;
 import com.group5.ArtExpress.dto.responseDto.SendMailResponse;
 import com.group5.ArtExpress.emailService.BrevoMailService;
+
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
@@ -39,8 +43,8 @@ public class ArtistServiceImpl implements ArtistService{
     @Autowired
     private EmailVerificationService emailVerificationService;
 
-    @Autowired
-    private BrevoMailService brevoMailService;
+//    @Autowired
+//    private BrevoMailService brevoMailService;
     @Override
     public Artist register(ArtistRequest request) {
         emailVerificationService.verifyEmailFormat(request.getEmail());
@@ -51,27 +55,33 @@ public class ArtistServiceImpl implements ArtistService{
 
 //        SendMailToNewArtist(request);
 
-        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
+        ArtistConfirmation artistConfirmation = new ArtistConfirmation(newArtist);
+
+//        SendMailToNewArtist(request);
+
+//        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
+
         artistConfirmationRepo.save(artistConfirmation);
 
-//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
+        emailService.sendSimpleMailMessage(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
         return newArtist;
 
     }
 
-    private void SendMailToNewArtist(ArtistRequest request) {
-        SendMailRequest sendMailRequest = new SendMailRequest();
-        sendMailRequest.setHtmlContent("Dear " + request.getFirstName() + "\nYou're welcome on board. " +
-                "\nThank you for signing up on ArtXpress. It promises to be an exciting journey with us!" +
-                "\nKind Regards from the team at ArtXpress");
-        SendMailResponse mailResponse = brevoMailService.sendMail(sendMailRequest);
-    }
+//    private void SendMailToNewArtist(ArtistRequest request) {
+//        SendMailRequest sendMailRequest = new SendMailRequest();
+//        sendMailRequest.setHtmlContent("Dear " + request.getFirstName() + "\nYou're welcome on board. " +
+//                "\nThank you for signing up on ArtXpress. It promises to be an exciting journey with us!" +
+//                "\nKind Regards from the team at ArtXpress");
+//        SendMailResponse mailResponse = brevoMailService.sendMail(sendMailRequest);
+//    }
 
 
     @Override
     public Boolean verifyToken(String token) {
 
         ArtistConfirmation artistConfirmation = artistConfirmationRepo.findByToken(token);
+        System.out.println(artistConfirmation);
         if(artistConfirmation == null) throw new TokenWasNotFoundException("Could not find token");
         Artist artist = artistRepo.findByEmailIgnoreCase(artistConfirmation.getArtist().getEmail());
         artist.setEnabled(true);
@@ -81,8 +91,13 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
-        return null;
+    public MessageResponse login(LoginRequest loginRequest) {
+        Artist artist = artistRepo.findByEmailIgnoreCase(loginRequest.getEmail());
+        if(artist != null && artist.getPassword().equals(loginRequest.getPassword())){
+            if(artist.isEnabled()) return new MessageResponse("Login successful.",200);
+            else return new MessageResponse("Account not verified. Please verify your email.", 401);
+        }
+        else return new MessageResponse("Login Unsuccessful, Account does not exist.", 401);
     }
 
 }
