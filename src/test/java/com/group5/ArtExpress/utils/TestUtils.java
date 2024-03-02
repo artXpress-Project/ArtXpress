@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 public class TestUtils {
 
-    public static MultipartFile getTestImage(String fileLocation) throws IOException {
+    public static MultipartFile getTestImage(String fileLocation) {
         Path path = Paths.get(fileLocation);
         try(InputStream stream = Files.newInputStream(path)) {
             MultipartFile file = new MockMultipartFile("test file", stream);

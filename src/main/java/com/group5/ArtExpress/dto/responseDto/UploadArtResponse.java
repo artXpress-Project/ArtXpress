@@ -11,14 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 public class UploadArtResponse {
-//    private List<MultipartFile> artWork;
-//    private String title;
-//    private String genre;
-//    private String description;
-//    private String artist;
-//    private String medium;
-//    private String size;
-//    private BigDecimal price;
     private String message;
     private Long mediaId;
     private String url;
