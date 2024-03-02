@@ -2,6 +2,7 @@ package com.group5.ArtExpress.service;
 
 
 
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
@@ -42,10 +43,10 @@ public class ArtistServiceImpl implements ArtistService{
         Artist artist = modelMapper.map(request, Artist.class);
         map(request, artist);
         Artist newArtist = artistRepo.save(artist);
-        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
+        ArtistConfirmation artistConfirmation = new ArtistConfirmation(newArtist);
         artistConfirmationRepo.save(artistConfirmation);
 
-//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
+        emailService.sendSimpleMailMessage(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
         return newArtist;
 
     }
@@ -55,6 +56,7 @@ public class ArtistServiceImpl implements ArtistService{
     public Boolean verifyToken(String token) {
 
         ArtistConfirmation artistConfirmation = artistConfirmationRepo.findByToken(token);
+        System.out.println(artistConfirmation);
         if(artistConfirmation == null) throw new TokenWasNotFoundException("Could not find token");
         Artist artist = artistRepo.findByEmailIgnoreCase(artistConfirmation.getArtist().getEmail());
         artist.setEnabled(true);
@@ -64,8 +66,13 @@ public class ArtistServiceImpl implements ArtistService{
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
-        return null;
+    public MessageResponse login(LoginRequest loginRequest) {
+        Artist artist = artistRepo.findByEmailIgnoreCase(loginRequest.getEmail());
+        if(artist != null && artist.getPassword().equals(loginRequest.getPassword())){
+            if(artist.isEnabled()) return new MessageResponse("Login successful.",200);
+            else return new MessageResponse("Account not verified. Please verify your email.", 401);
+        }
+        else return new MessageResponse("Login Unsuccessful, Account does not exist.", 401);
     }
 
 }

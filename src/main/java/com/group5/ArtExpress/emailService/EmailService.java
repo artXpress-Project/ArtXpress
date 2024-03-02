@@ -6,4 +6,8 @@ import org.springframework.stereotype.Service;
 public interface EmailService {
     void sendHtmlEmailWithEmbeddedFiles(String name, String to, String token);
     void sendSimpleMailMessage(String name, String to, String token);
+
+   void sendHtmlEmailWithEmbeddedFilesToCollector(String name, String to, String token);
+
+    void sendSimpleCollectorMailMessage(String name, String to, String token);
 }

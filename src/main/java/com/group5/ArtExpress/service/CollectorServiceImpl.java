@@ -1,6 +1,7 @@
 package com.group5.ArtExpress.service;
 
 
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.CollectorConfirmation;
@@ -32,8 +33,10 @@ public class CollectorServiceImpl implements CollectorService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private EmailVerificationService emailVerificationService;
+
     @Autowired
     private CollectorConfirmationRepo collectorConfirmationRepo;
     @Override
@@ -48,14 +51,11 @@ public class CollectorServiceImpl implements CollectorService{
         Collector collects = collectorRepo.save(collector);
 
 
-        CollectorConfirmation confirmation = new CollectorConfirmation(collector);
+        CollectorConfirmation confirmation = new CollectorConfirmation(collects);
         collectorConfirmationRepo.save(confirmation);
 
-//        emailService.sendHtmlEmailWithEmbeddedFiles(collector.getFirstName(),collector.getEmail(),confirmation.getToken());
+        emailService.sendHtmlEmailWithEmbeddedFilesToCollector(collector.getFirstName(),collector.getEmail(),confirmation.getToken());
         return collects;
-
-
-
     }
 
 
@@ -71,7 +71,14 @@ public class CollectorServiceImpl implements CollectorService{
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
-        return null;
+    public MessageResponse login(LoginRequest loginRequest) {
+        Collector collector = collectorRepo.findByEmailIgnoreCase(loginRequest.getEmail());
+        if(collector != null && collector.getPassword().equals(loginRequest.getPassword())){
+            if(collector.isEnabled()) return new MessageResponse("Login successful.",200);
+            else return new MessageResponse("Account not verified. Please verify your email.", 401);
+        }
+        else return new MessageResponse("Login Unsuccessful, Account does not exist.", 401);
     }
+
+
 }
