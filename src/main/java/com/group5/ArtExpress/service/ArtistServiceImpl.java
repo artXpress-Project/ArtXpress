@@ -49,7 +49,7 @@ public class ArtistServiceImpl implements ArtistService{
         map(request, artist);
         Artist newArtist = artistRepo.save(artist);
 
-        SendMailToNewArtist(request);
+//        SendMailToNewArtist(request);
 
         ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
         artistConfirmationRepo.save(artistConfirmation);

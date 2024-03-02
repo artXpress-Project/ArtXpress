@@ -16,14 +16,6 @@ import java.util.Map;
 public class CloudinaryCloudServiceImpl implements CloudService{
     private final Cloudinary cloudinary;
 
-//    @Override
-//    public String upload(List<MultipartFile> artWork) {
-//        try {
-//            Uploader uploader = cloudinary.uploader();
-//            Map<?, ?> response = uploader.upload(artWork.)
-//        }
-//    }
-
     @Override
     public String upload(MultipartFile file) {
         try {
