@@ -45,4 +45,7 @@ public class Artwork {
 
     @Column(nullable = false, name="uploadDateTime")
     private LocalDateTime uploadDateTime;
+
+    @Column(nullable = true)
+    private StringBuffer imageLinks;
 }
