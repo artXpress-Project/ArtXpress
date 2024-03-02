@@ -43,8 +43,8 @@ public class ArtistServiceImpl implements ArtistService{
     @Autowired
     private EmailVerificationService emailVerificationService;
 
-    @Autowired
-    private BrevoMailService brevoMailService;
+//    @Autowired
+//    private BrevoMailService brevoMailService;
     @Override
     public Artist register(ArtistRequest request) {
         emailVerificationService.verifyEmailFormat(request.getEmail());
@@ -55,9 +55,9 @@ public class ArtistServiceImpl implements ArtistService{
 
         ArtistConfirmation artistConfirmation = new ArtistConfirmation(newArtist);
 
-        SendMailToNewArtist(request);
+//        SendMailToNewArtist(request);
 
-        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
+//        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
 
         artistConfirmationRepo.save(artistConfirmation);
 
@@ -66,13 +66,13 @@ public class ArtistServiceImpl implements ArtistService{
 
     }
 
-    private void SendMailToNewArtist(ArtistRequest request) {
-        SendMailRequest sendMailRequest = new SendMailRequest();
-        sendMailRequest.setHtmlContent("Dear " + request.getFirstName() + "\nYou're welcome on board. " +
-                "\nThank you for signing up on ArtXpress. It promises to be an exciting journey with us!" +
-                "\nKind Regards from the team at ArtXpress");
-        SendMailResponse mailResponse = brevoMailService.sendMail(sendMailRequest);
-    }
+//    private void SendMailToNewArtist(ArtistRequest request) {
+//        SendMailRequest sendMailRequest = new SendMailRequest();
+//        sendMailRequest.setHtmlContent("Dear " + request.getFirstName() + "\nYou're welcome on board. " +
+//                "\nThank you for signing up on ArtXpress. It promises to be an exciting journey with us!" +
+//                "\nKind Regards from the team at ArtXpress");
+//        SendMailResponse mailResponse = brevoMailService.sendMail(sendMailRequest);
+//    }
 
 
     @Override
