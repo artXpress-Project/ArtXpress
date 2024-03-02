@@ -4,6 +4,8 @@ import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.State;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
+import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
@@ -13,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ArtistServiceImplTest {
@@ -32,6 +34,8 @@ public class ArtistServiceImplTest {
 
     ArtistRequest artistRequest;
 
+    LoginRequest loginRequest;
+
     @BeforeEach
     public void tearDown(){
         artistConfirmationRepo.deleteAll();
@@ -41,6 +45,7 @@ public class ArtistServiceImplTest {
     @BeforeEach
     public void startWith(){
         artistRequest = new ArtistRequest();
+        loginRequest = new LoginRequest();
     }
 
     @Test
@@ -57,10 +62,14 @@ public class ArtistServiceImplTest {
         artistRequest.setLga("ghf rhrgfgd sd");
         artistRequest.setBusinessName("ghfyrhdd");
         artistRequest.setPhoneNumber("09567456382");
-//        ArtistConfirmation confirmation = new ArtistConfirmation(artist);
-//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(), artist.getEmail(), confirmation.getToken());
+        ArtistConfirmation confirmation = new ArtistConfirmation(artist);
+        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(), artist.getEmail(), confirmation.getToken());
+        System.out.println(confirmation.getToken());
+        System.out.println(artist.isEnabled());
         Artist artists = artistService.register(artistRequest);
         assertNotNull(artists);
+
     }
+
 
 }
