@@ -2,7 +2,13 @@ package com.group5.ArtExpress.service;
 
 
 
+
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+
+import com.group5.ArtExpress.dto.requestDto.SendMailRequest;
+import com.group5.ArtExpress.dto.responseDto.SendMailResponse;
+import com.group5.ArtExpress.emailService.BrevoMailService;
+
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
@@ -36,6 +42,9 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Autowired
     private EmailVerificationService emailVerificationService;
+
+    @Autowired
+    private BrevoMailService brevoMailService;
     @Override
     public Artist register(ArtistRequest request) {
         emailVerificationService.verifyEmailFormat(request.getEmail());
@@ -43,12 +52,26 @@ public class ArtistServiceImpl implements ArtistService{
         Artist artist = modelMapper.map(request, Artist.class);
         map(request, artist);
         Artist newArtist = artistRepo.save(artist);
+
         ArtistConfirmation artistConfirmation = new ArtistConfirmation(newArtist);
+
+        SendMailToNewArtist(request);
+
+        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
+
         artistConfirmationRepo.save(artistConfirmation);
 
         emailService.sendSimpleMailMessage(artist.getFirstName(),artist.getEmail(),artistConfirmation.getToken());
         return newArtist;
 
+    }
+
+    private void SendMailToNewArtist(ArtistRequest request) {
+        SendMailRequest sendMailRequest = new SendMailRequest();
+        sendMailRequest.setHtmlContent("Dear " + request.getFirstName() + "\nYou're welcome on board. " +
+                "\nThank you for signing up on ArtXpress. It promises to be an exciting journey with us!" +
+                "\nKind Regards from the team at ArtXpress");
+        SendMailResponse mailResponse = brevoMailService.sendMail(sendMailRequest);
     }
 
 
