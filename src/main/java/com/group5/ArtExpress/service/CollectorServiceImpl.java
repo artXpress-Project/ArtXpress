@@ -12,6 +12,7 @@ import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.repository.CollectorConfirmationRepo;
 import com.group5.ArtExpress.repository.CollectorRepo;
+import com.group5.ArtExpress.repository.LogoutRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +42,7 @@ public class CollectorServiceImpl implements CollectorService{
     private CollectorConfirmationRepo collectorConfirmationRepo;
     @Override
     public Collector registerCollector(CollectorRequest collectorRequest) {
-        emailVerificationService.ifEmailAlreadyExist(collectorRequest.getEmail());
+        emailVerificationService.ifCollectorEmailAlreadyExist(collectorRequest.getEmail());
         emailVerificationService.verifyEmailFormat(collectorRequest.getEmail());
         Collector collector = modelMapper.map(collectorRequest, Collector.class);
 //        String encodedPassword = passwordEncoder.encode(collectorRequest.getPassword());
@@ -74,10 +75,27 @@ public class CollectorServiceImpl implements CollectorService{
     public MessageResponse login(LoginRequest loginRequest) {
         Collector collector = collectorRepo.findByEmailIgnoreCase(loginRequest.getEmail());
         if(collector != null && collector.getPassword().equals(loginRequest.getPassword())){
-            if(collector.isEnabled()) return new MessageResponse("Login successful.",200);
-            else return new MessageResponse("Account not verified. Please verify your email.", 401);
+            if(collector.isEnabled()) {
+                collector.setLocked(false);
+                collectorRepo.save(collector);
+                return new MessageResponse("Login successful. \n", 200);
+            }
+            else return new MessageResponse("Account not verified. Please verify your email.\n", 401);
         }
-        else return new MessageResponse("Login Unsuccessful, Account does not exist.", 401);
+        else return new MessageResponse("Login Unsuccessful, Account does not exist.\n", 401);
+    }
+
+    @Override
+    public MessageResponse logout(LogoutRequest logoutRequest) {
+       Collector collector = collectorRepo.findByEmailIgnoreCase(logoutRequest.getEmail());
+        if(collector.isEnabled()) {
+            collector.setLocked(true);
+            collectorRepo.save(collector);
+            return new MessageResponse("Logout successful",
+                    200);
+        }else return new MessageResponse( "message: " + "Artist is not logged in yet",
+                401);
+
     }
 
 

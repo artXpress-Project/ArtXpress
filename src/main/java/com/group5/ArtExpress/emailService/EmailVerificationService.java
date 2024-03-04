@@ -1,6 +1,11 @@
 package com.group5.ArtExpress.emailService;
 
+import com.group5.ArtExpress.customException.CouldNotFindEmailException;
 import com.group5.ArtExpress.customException.EmailAlreadyExistException;
+import com.group5.ArtExpress.data.models.Artist;
+import com.group5.ArtExpress.data.models.Collector;
+import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+import com.group5.ArtExpress.repository.ArtistRepo;
 import com.group5.ArtExpress.repository.CollectorRepo;
 import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,8 @@ import java.util.regex.Pattern;
 public class EmailVerificationService {
     @Autowired
     CollectorRepo collectorRepo;
+     @Autowired
+    ArtistRepo artistRepo;
     public boolean verifyEmailFormat(@Email String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -24,12 +31,26 @@ public class EmailVerificationService {
         return matcher.matches();
     }
 
-    public void ifEmailAlreadyExist(String email){
-        if (collectorRepo.existsByEmail(email)){
-           throw new EmailAlreadyExistException("Email already exist");
-        }
-
+    public void ifArtistEmailAlreadyExist(String email){
+        if (collectorRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
     }
+
+    public void ifCollectorEmailAlreadyExist(String email){
+       if(artistRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
+    }
+
+    public Artist findArtistEmail(String email){
+        Artist artist = artistRepo.findByEmailIgnoreCase(email);
+        if(artist == null) throw new CouldNotFindEmailException("Could not find user with this particular" + email);
+        else return artist;
+    }
+
+    public Collector findCollectorEmail(String email){
+        Collector collector = collectorRepo.findByEmailIgnoreCase(email);
+        if(collector == null) throw new CouldNotFindEmailException("Could not find user with this particular" + email);
+        else return collector;
+    }
+
 
 //    public boolean verifyEmailDomain(String email) {
 //        String[] parts = email.split("@");

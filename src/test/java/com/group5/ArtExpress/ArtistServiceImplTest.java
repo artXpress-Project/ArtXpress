@@ -51,7 +51,6 @@ public class ArtistServiceImplTest {
     @Test
     public void canRegisterAnArtist(){
         Artist artist = new Artist();
-        artist.setEmail("ikennajames03@gmail.com");
         artistRequest.setFirstName("kelvin");
         artistRequest.setLastName("ekene");
         artistRequest.setPassword("kens");

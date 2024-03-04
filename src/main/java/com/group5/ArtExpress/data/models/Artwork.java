@@ -36,11 +36,11 @@ public class Artwork {
     @Column(nullable = false, name="bigDecimal")
     private String BigDecimal;
 
-    @Column(nullable = false, name="comment")
+    @Column(nullable = true, name="comment")
     @OneToMany
     private List<Comment> comments;
 
-    @Column(nullable = false, name="likes")
+    @Column(nullable = true, name="likes")
     private int likes;
 
     @Column(nullable = false, name="uploadDateTime")
