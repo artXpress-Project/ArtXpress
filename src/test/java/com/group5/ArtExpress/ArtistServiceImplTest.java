@@ -87,7 +87,6 @@ public class ArtistServiceImplTest {
     @DisplayName("test that registered and enabled user can login")
     public void testLogin() {
         Artist artist = new Artist();
-        artist.setEmail("ikennajames03@gmail.com");
         artistRequest.setFirstName("kelvin");
         artistRequest.setLastName("ekene");
         artistRequest.setPassword("kens");

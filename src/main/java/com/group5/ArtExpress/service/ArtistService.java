@@ -6,6 +6,7 @@ import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
+import com.group5.ArtExpress.repository.LogoutRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,4 +17,5 @@ public interface ArtistService {
     MessageResponse login(LoginRequest loginRequest);
 
     UploadArtResponse uploadArt(UploadArtRequest uploadArtRequest);
+    MessageResponse logout(LogoutRequest logoutRequest);
 }

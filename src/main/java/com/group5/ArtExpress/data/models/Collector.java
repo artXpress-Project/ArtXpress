@@ -27,4 +27,7 @@ public class Collector extends User {
 
     @Column(nullable = false, name="isEnabled")
     private boolean isEnabled;
+
+    @Column(nullable = false, name = "isLocked")
+    private boolean isLocked;
 }

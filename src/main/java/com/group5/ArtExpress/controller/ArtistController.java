@@ -7,6 +7,8 @@ import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.http.HttpResponse;
+
+import com.group5.ArtExpress.repository.LogoutRequest;
 import com.group5.ArtExpress.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,4 +99,16 @@ public class ArtistController {
                      );
          }
     }
+
+     @PostMapping("/logout")
+     public ResponseEntity<HttpResponse> logout(@RequestBody LogoutRequest logoutRequest){
+         MessageResponse messageResponse = artistService.logout(logoutRequest);
+            return ResponseEntity.ok().body(
+                     HttpResponse.builder()
+                             .timeStamp(LocalDateTime.now().toString())
+                             .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
+                             .build()
+             );
+
+     }
 }

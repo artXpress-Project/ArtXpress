@@ -4,6 +4,7 @@ import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+import com.group5.ArtExpress.repository.LogoutRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,4 +13,6 @@ public interface CollectorService {
     Boolean verifyToken(String token);
 
     MessageResponse login(LoginRequest loginRequest);
+
+    MessageResponse logout(LogoutRequest logoutRequest);
 }

@@ -27,6 +27,7 @@ import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
 import com.group5.ArtExpress.repository.ArtworkRepository;
 import com.group5.ArtExpress.repository.GenreRepository;
+import com.group5.ArtExpress.repository.LogoutRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,10 +63,11 @@ public class ArtistServiceImpl implements ArtistService{
 
 //    @Autowired
 //    private BrevoMailService brevoMailService;
+
     @Override
     public Artist register(ArtistRequest request) {
         emailVerificationService.verifyEmailFormat(request.getEmail());
-        emailVerificationService.ifEmailAlreadyExist(request.getEmail());
+        emailVerificationService.ifArtistEmailAlreadyExist(request.getEmail());
         Artist artist = modelMapper.map(request, Artist.class);
         map(request, artist);
         Artist newArtist = artistRepo.save(artist);
@@ -75,8 +77,6 @@ public class ArtistServiceImpl implements ArtistService{
         ArtistConfirmation artistConfirmation = new ArtistConfirmation(newArtist);
 
 //        SendMailToNewArtist(request);
-
-//        ArtistConfirmation artistConfirmation = new ArtistConfirmation(artist);
 
         artistConfirmationRepo.save(artistConfirmation);
 
@@ -109,15 +109,18 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public MessageResponse login(LoginRequest loginRequest) {
-        Artist artist = artistRepo.findByEmailIgnoreCase(loginRequest.getEmail());
-        if(artist != null && artist.getPassword().equals(loginRequest.getPassword())){
-            if(artist.isEnabled()) return new MessageResponse("Login successful.",200);
+        Artist artist = emailVerificationService.findArtistEmail(loginRequest.getEmail());
+        if(artist.getPassword().equals(loginRequest.getPassword())){
+            if(artist.isEnabled()) {
+                artist.setLocked(false);
+                return new MessageResponse("Login successful.",
+                                           200);
+            }
             else return new MessageResponse("Account not verified. Please verify your email.", 401);
         }
         else return new MessageResponse("Login Unsuccessful, Account does not exist.", 401);
     }
 
-    @Override
     public UploadArtResponse uploadArt(UploadArtRequest uploadArtRequest) {
         Optional<Artist> foundArtist = artistRepo.findByBusinessName(uploadArtRequest.getArtist());
         if (foundArtist.isEmpty()) throw new ArtistNotFoundException("Artist not found!");
@@ -165,6 +168,18 @@ public class ArtistServiceImpl implements ArtistService{
         artwork.setGenre(genre);
         artwork.setUploadDateTime(LocalDateTime.now());
         artwork.setImageLinks("");
+    }
+
+    public MessageResponse logout(LogoutRequest logoutRequest) {
+        Artist artist = emailVerificationService.findArtistEmail(logoutRequest.getEmail());
+            if(artist.isEnabled()) {
+                artist.setLocked(true);
+                artistRepo.save(artist);
+                return new MessageResponse("Logout successful",
+                                        200);
+            }else return new MessageResponse( "message: " + "Artist is not logged in yet",
+                                            401);
+
     }
 
 }
