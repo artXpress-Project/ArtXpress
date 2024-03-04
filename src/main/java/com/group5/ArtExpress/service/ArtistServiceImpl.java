@@ -3,12 +3,18 @@ package com.group5.ArtExpress.service;
 
 
 
+import com.group5.ArtExpress.customException.ArtistNotEnabled;
+import com.group5.ArtExpress.customException.ArtistNotFoundException;
+import com.group5.ArtExpress.data.models.Artwork;
+import com.group5.ArtExpress.data.models.Genre;
+import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 
-import com.group5.ArtExpress.dto.requestDto.SendMailRequest;
+//import com.group5.ArtExpress.dto.requestDto.SendMailRequest;
 import com.group5.ArtExpress.dto.responseDto.SendMailResponse;
-import com.group5.ArtExpress.emailService.BrevoMailService;
+//import com.group5.ArtExpress.emailService.BrevoMailService;
 
+import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
@@ -19,9 +25,14 @@ import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
+import com.group5.ArtExpress.repository.ArtworkRepository;
+import com.group5.ArtExpress.repository.GenreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static com.group5.ArtExpress.utils.Mapper.map;
 
@@ -42,6 +53,12 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Autowired
     private EmailVerificationService emailVerificationService;
+
+    @Autowired
+    private ArtworkRepository artworkRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
 //    @Autowired
 //    private BrevoMailService brevoMailService;
@@ -98,6 +115,56 @@ public class ArtistServiceImpl implements ArtistService{
             else return new MessageResponse("Account not verified. Please verify your email.", 401);
         }
         else return new MessageResponse("Login Unsuccessful, Account does not exist.", 401);
+    }
+
+    @Override
+    public UploadArtResponse uploadArt(UploadArtRequest uploadArtRequest) {
+        Optional<Artist> foundArtist = artistRepo.findByBusinessName(uploadArtRequest.getArtist());
+        if (foundArtist.isEmpty()) throw new ArtistNotFoundException("Artist not found!");
+
+        boolean isUnlocked = !foundArtist.get().isLocked;
+        
+        if (foundArtist.get().isEnabled() && isUnlocked) {
+            Artwork artwork = getArtwork(uploadArtRequest, foundArtist);
+            artworkRepository.save(artwork);
+            return getUploadArtResponse(artwork);
+        }
+        throw new ArtistNotEnabled("Not enabled");
+    }
+
+    private static UploadArtResponse getUploadArtResponse(Artwork artwork) {
+        UploadArtResponse uploadArtResponse = new UploadArtResponse();
+        uploadArtResponse.setMessage("Upload successful");
+        uploadArtResponse.setStatusCode(200);
+        uploadArtResponse.setUploadDateTime(artwork.getUploadDateTime());
+
+        return uploadArtResponse;
+    }
+
+    private Artwork getArtwork(UploadArtRequest uploadArtRequest, Optional<Artist> foundArtist) {
+        Genre genre = getGenre(uploadArtRequest);
+        Artwork artwork = new Artwork();
+        artwork.setArtist(foundArtist.get());
+        mapArtwork(uploadArtRequest, artwork, genre);
+        return artwork;
+    }
+
+    private Genre getGenre(UploadArtRequest uploadArtRequest) {
+        Genre genre = new Genre();
+        genre.setGenreName(uploadArtRequest.getGenre());
+        genreRepository.save(genre);
+        return genre;
+    }
+
+    private static void mapArtwork(UploadArtRequest uploadArtRequest, Artwork artwork, Genre genre) {
+        artwork.setTitle(uploadArtRequest.getTitle());
+        artwork.setDescription(uploadArtRequest.getDescription());
+        artwork.setMedium(uploadArtRequest.getMedium());
+        artwork.setPrice(uploadArtRequest.getPrice());
+        artwork.setSize(uploadArtRequest.getSize());
+        artwork.setGenre(genre);
+        artwork.setUploadDateTime(LocalDateTime.now());
+        artwork.setImageLinks("");
     }
 
 }

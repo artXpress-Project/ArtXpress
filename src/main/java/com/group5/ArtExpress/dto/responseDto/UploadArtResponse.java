@@ -10,9 +10,10 @@ import java.util.List;
 
 @Getter
 @Setter
+
 public class UploadArtResponse {
     private String message;
-    private Long mediaId;
+    private int statusCode;
     private String url;
     private LocalDateTime uploadDateTime;
 }

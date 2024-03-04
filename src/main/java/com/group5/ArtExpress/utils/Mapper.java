@@ -19,4 +19,5 @@ public class Mapper {
         artist.setDateTime(LocalDateTime.now());
         artist.setArtworks(new ArrayList<>());
     }
+
 }

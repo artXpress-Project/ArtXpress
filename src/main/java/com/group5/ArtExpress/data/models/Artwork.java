@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Artwork {
     @Column(nullable = false, name="title")
     private String title;
 
-    @JoinColumn(nullable = false, name="genre")
+    @JoinColumn(nullable = false)
     @ManyToOne
     private Genre genre;
 
@@ -34,18 +35,18 @@ public class Artwork {
     private String size;
 
     @Column(nullable = false, name="bigDecimal")
-    private String BigDecimal;
+    private BigDecimal price;
 
-    @Column(nullable = false, name="comment")
+    @Column(nullable = true, name="comment")
     @OneToMany
     private List<Comment> comments;
 
-    @Column(nullable = false, name="likes")
+    @Column(nullable = true, name="likes")
     private int likes;
 
     @Column(nullable = false, name="uploadDateTime")
     private LocalDateTime uploadDateTime;
 
     @Column(nullable = true)
-    private StringBuffer imageLinks;
+    private String imageLinks;
 }

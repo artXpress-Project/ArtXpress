@@ -3,12 +3,10 @@ package com.group5.ArtExpress.controller;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
-import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.http.HttpResponse;
-import com.group5.ArtExpress.service.ArtXpressMediaService;
-import com.group5.ArtExpress.service.ArtXpressMediaServiceImpl;
 import com.group5.ArtExpress.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +24,8 @@ import java.util.Map;
 public class ArtistController {
     @Autowired
     private ArtistService artistService;
-    @Autowired
-    private ArtXpressMediaService artXpressMediaService;
 
-     @PostMapping
+    @PostMapping
     public ResponseEntity<HttpResponse> registerArtist(@RequestBody ArtistRequest artistRequest){
          Artist artist = artistService.register(artistRequest);
          return ResponseEntity.created(URI.create("")).body(
@@ -55,25 +51,6 @@ public class ArtistController {
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
-
-    }
-
-    @PostMapping(path = "api/v1/uploads")
-    public ResponseEntity<String> uploadArtwork(@ModelAttribute UploadArtRequest uploadArtRequest) {
-         try {
-             List<MultipartFile> artWorkFiles = uploadArtRequest.getArtWork();
-
-             for (MultipartFile file : artWorkFiles) {
-                 // Access file properties such as file.getOriginalFilename(), file.getSize(), etc.
-                 // Perform operations like saving the file to the server or processing its content
-             }
-             artXpressMediaService.uploadArt(uploadArtRequest);
-             return ResponseEntity.ok("Art uploaded successfully");
-         } catch (Exception e) {
-             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading art");
-         }
-//        UploadArtResponse response = artXpressMediaService.uploadArt(uploadArtRequest);
-//        return ResponseEntity.
     }
 
     @PostMapping("/login")
@@ -97,4 +74,27 @@ public class ArtistController {
             );
         }
      }
+
+    @PostMapping("/uploads")
+    public ResponseEntity<HttpResponse> uploadArtwork(@RequestBody UploadArtRequest uploadArtRequest) {
+         UploadArtResponse uploadArtResponse = artistService.uploadArt(uploadArtRequest);
+         try {
+             return ResponseEntity.ok().body(
+                     HttpResponse.builder()
+                             .timeStamp(LocalDateTime.now().toString())
+                             .data(Map.of(uploadArtResponse.getMessage(), uploadArtResponse.getStatusCode()))
+                             .build()
+             );
+         } catch (Exception e) {
+             return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                     .body(
+                             HttpResponse.builder()
+                                     .timeStamp(LocalDateTime.now().toString())
+                                     .data(Map.of("Media type unsupported", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+                                     .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                                     .statusCode(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+                                     .build()
+                     );
+         }
+    }
 }
