@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+
 public class CloudinaryCloudServiceImpl implements CloudService{
-    private final Cloudinary cloudinary;
+    private Cloudinary cloudinary;
 
     @Override
     public String upload(MultipartFile file) {

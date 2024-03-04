@@ -5,6 +5,7 @@ import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.http.HttpResponse;
+import com.group5.ArtExpress.repository.LogoutRequest;
 import com.group5.ArtExpress.service.CollectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,6 +71,17 @@ public class CollectorController {
                             .build()
             );
         }
+
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<HttpResponse> logout(@RequestBody LogoutRequest logoutRequest){
+        MessageResponse messageResponse = collectorService.logout(logoutRequest);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
+                        .build()
+        );
     }
 
 
