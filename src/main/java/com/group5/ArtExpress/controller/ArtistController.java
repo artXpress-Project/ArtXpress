@@ -2,15 +2,19 @@ package com.group5.ArtExpress.controller;
 
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
+
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.http.HttpResponse;
+
 import com.group5.ArtExpress.repository.LogoutRequest;
+
 import com.group5.ArtExpress.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -19,8 +23,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/artist")
 public class ArtistController {
-     @Autowired
-    public ArtistService artistService;
+    @Autowired
+    private ArtistService artistService;
+
 
      @PostMapping
     public ResponseEntity<HttpResponse> registerArtist(@RequestBody ArtistRequest artistRequest){
@@ -50,6 +55,7 @@ public class ArtistController {
         );
 
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<HttpResponse> login(@RequestBody LoginRequest loginRequest){
@@ -83,4 +89,5 @@ public class ArtistController {
              );
 
      }
+
 }

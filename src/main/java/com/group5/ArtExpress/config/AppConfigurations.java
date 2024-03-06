@@ -16,19 +16,6 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfigurations {
 
-//    @Value("${mail.api.key}")
-//    private String mailApiKey;
-//
-//    @Value("${mail.api.url}")
-//    private String mailServiceUrl;
-
-//    @Value("${cloud.api.name}")
-//    private String cloudApiName;
-//    @Value("${cloud.api.key}")
-//    private String cloudApiKey;
-//    @Value("${cloud.api.secret}")
-//    private String cloudApiSecret;
-
     @Bean
     public CollectorService collectorService(){
         return new CollectorServiceImpl();
@@ -39,44 +26,21 @@ public class AppConfigurations {
     }
 
     @Bean
+    public ExhibitionEventService exhibitionEventService(){
+        return new ExhibitionEventServiceImpl();
+    }
+
+    @Bean
+    public CommentService commentService(){
+        return new CommentServiceImpl();
+    }
+
+    @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
-    @Bean
-    public CloudService cloudService(){
-        return new CloudinaryCloudServiceImpl();
-    }
 
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        return new RestTemplate();
-//    }
-
-
-//    @Bean
-//    public Cloudinary cloudinary() {
-//        Cloudinary cloudinary = new Cloudinary(
-//                ObjectUtils.asMap(
-//                        "cloud_name", getCloudApiName(),
-//                        "api_key", getCloudApiKey(),
-//                        "api_secret", getCloudApiSecret()
-//                )
-//        );
-//        return cloudinary;
-//
-//    }
-
-//    @Bean
-//    public EmailService emailService(JavaMailSender emailSender, TemplateEngine templateEngine){
-//        return new EmailServiceImpl(emailSender,templateEngine);
-//    }
-
-//    @Bean
-//    public JavaMailSender javaMailSender() {
-//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-//        return mailSender;
-//    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.group5.ArtExpress.service;
 
 
+import com.group5.ArtExpress.customException.IdNotFoundException;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
@@ -73,7 +74,7 @@ public class CollectorServiceImpl implements CollectorService{
 
     @Override
     public MessageResponse login(LoginRequest loginRequest) {
-        Collector collector = collectorRepo.findByEmailIgnoreCase(loginRequest.getEmail());
+        Collector collector = emailVerificationService.findCollectorEmail(loginRequest.getEmail());
         if(collector != null && collector.getPassword().equals(loginRequest.getPassword())){
             if(collector.isEnabled()) {
                 collector.setLocked(false);
@@ -87,7 +88,7 @@ public class CollectorServiceImpl implements CollectorService{
 
     @Override
     public MessageResponse logout(LogoutRequest logoutRequest) {
-       Collector collector = collectorRepo.findByEmailIgnoreCase(logoutRequest.getEmail());
+        Collector collector = emailVerificationService.findCollectorEmail(logoutRequest.getEmail());
         if(collector.isEnabled()) {
             collector.setLocked(true);
             collectorRepo.save(collector);
@@ -97,6 +98,13 @@ public class CollectorServiceImpl implements CollectorService{
                 401);
 
     }
+
+    @Override
+    public Collector findCollectorById(Long id) {
+        return collectorRepo.findById(id).orElseThrow(()-> new IdNotFoundException("Id" + " " + id + " " + "Does not Exist"));
+    }
+
+
 
 
 }

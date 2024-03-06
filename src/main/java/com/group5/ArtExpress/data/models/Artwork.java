@@ -18,7 +18,7 @@ public class Artwork {
     @Column(nullable = false, name="title")
     private String title;
 
-    @JoinColumn(nullable = false, name="genre")
+    @JoinColumn(nullable = true, name="genre")
     @ManyToOne
     private Genre genre;
 
@@ -48,4 +48,9 @@ public class Artwork {
 
     @Column(nullable = true)
     private StringBuffer imageLinks;
+
+    @Column(length = 1000)
+    @ElementCollection
+    private List<String> images;
+
 }

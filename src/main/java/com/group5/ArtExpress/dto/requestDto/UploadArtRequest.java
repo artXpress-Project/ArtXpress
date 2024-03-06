@@ -24,3 +24,13 @@ public class UploadArtRequest {
     private BigDecimal price;
     private LocalDateTime uploadDateTime;
 }
+//@RestController
+//@RequestMapping("/api/art")
+//public class ArtController {
+//
+//    @Autowired
+//    private ArtService artService; // Assuming you have a service to handle business logic
+
+
+
+

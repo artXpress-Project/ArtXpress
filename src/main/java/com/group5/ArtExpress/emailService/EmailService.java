@@ -10,4 +10,8 @@ public interface EmailService {
    void sendHtmlEmailWithEmbeddedFilesToCollector(String name, String to, String token);
 
     void sendSimpleCollectorMailMessage(String name, String to, String token);
+
+   void sendSimpleExhibitionMailMessage(String name, String to, String token);
+
+    void sendHtmlEmailWithEmbeddedFilesToExhibitionAttendees(String name, String to, String token);
 }

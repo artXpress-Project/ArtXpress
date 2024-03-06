@@ -4,9 +4,11 @@ import com.group5.ArtExpress.customException.CouldNotFindEmailException;
 import com.group5.ArtExpress.customException.EmailAlreadyExistException;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Collector;
+import com.group5.ArtExpress.data.models.ExhibitionEventRegistration;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.repository.ArtistRepo;
 import com.group5.ArtExpress.repository.CollectorRepo;
+import com.group5.ArtExpress.repository.ExhibitionEventRepo;
 import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class EmailVerificationService {
     CollectorRepo collectorRepo;
      @Autowired
     ArtistRepo artistRepo;
+
+     @Autowired
+    ExhibitionEventRepo exhibitionEventRepo;
     public boolean verifyEmailFormat(@Email String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
@@ -39,6 +44,10 @@ public class EmailVerificationService {
        if(artistRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
     }
 
+    public void ifExhibitionUserEmailAlreadyExist(String email){
+        if (collectorRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
+    }
+
     public Artist findArtistEmail(String email){
         Artist artist = artistRepo.findByEmailIgnoreCase(email);
         if(artist == null) throw new CouldNotFindEmailException("Could not find user with this particular" + email);
@@ -49,6 +58,12 @@ public class EmailVerificationService {
         Collector collector = collectorRepo.findByEmailIgnoreCase(email);
         if(collector == null) throw new CouldNotFindEmailException("Could not find user with this particular" + email);
         else return collector;
+    }
+
+    public ExhibitionEventRegistration findExhibitionEmail(String email){
+        ExhibitionEventRegistration eventRegistration = exhibitionEventRepo.findByEmailIgnoreCase(email);
+        if(eventRegistration == null) throw new CouldNotFindEmailException("Could not find user with this particular" + email);
+        else return eventRegistration;
     }
 
 
