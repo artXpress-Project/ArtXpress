@@ -9,6 +9,8 @@ import com.group5.ArtExpress.http.HttpResponse;
 
 import com.group5.ArtExpress.repository.LogoutRequest;
 
+
+
 import com.group5.ArtExpress.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
