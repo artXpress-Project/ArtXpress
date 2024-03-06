@@ -12,7 +12,7 @@ import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.repository.CollectorConfirmationRepo;
 import com.group5.ArtExpress.repository.CollectorRepo;
-import com.group5.ArtExpress.repository.LogoutRequest;
+import com.group5.ArtExpress.dto.requestDto.LogoutRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
