@@ -43,11 +43,6 @@ public class AppConfigurations {
         return new ModelMapper();
     }
 
-    @Bean
-    public CloudService cloudService(){
-        return new CloudinaryCloudServiceImpl();
-    }
-
 //    @Bean
 //    public RestTemplate restTemplate() {
 //        return new RestTemplate();

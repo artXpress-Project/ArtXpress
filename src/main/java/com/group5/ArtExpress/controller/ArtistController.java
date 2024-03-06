@@ -1,24 +1,20 @@
 package com.group5.ArtExpress.controller;
 
 import com.group5.ArtExpress.data.models.Artist;
-import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
-import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
-import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.dto.requestDto.*;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+import com.group5.ArtExpress.dto.responseDto.UpdateArtworkResponse;
 import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.http.HttpResponse;
 
-import com.group5.ArtExpress.repository.LogoutRequest;
 import com.group5.ArtExpress.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -108,7 +104,21 @@ public class ArtistController {
                              .timeStamp(LocalDateTime.now().toString())
                              .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
                              .build()
-             );
+            );
 
      }
+
+    @PatchMapping("/update/{artworkId}")
+    public ResponseEntity<HttpResponse> updateUpload(@PathVariable Long artworkId, UpdateUploadRequest request) {
+        UpdateArtworkResponse response = artistService.updateUpload(artworkId, request);
+
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of(response.getMessage(), response.getStatusCode()))
+                        .build()
+        );
+
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.group5.ArtExpress.repository;
+package com.group5.ArtExpress.dto.requestDto;
 
 import lombok.Data;
 

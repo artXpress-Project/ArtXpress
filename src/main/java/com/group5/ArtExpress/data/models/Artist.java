@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "artist")
 public class Artist extends User {
-    public boolean isLocked;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

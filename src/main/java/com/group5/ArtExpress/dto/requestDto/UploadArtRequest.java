@@ -24,6 +24,7 @@ public class UploadArtRequest {
     private String artist;
     private String medium;
     private String size;
+    private String imageLink;
     private BigDecimal price;
     private LocalDateTime uploadDateTime;
 }

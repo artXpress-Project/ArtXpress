@@ -6,28 +6,24 @@ import com.group5.ArtExpress.data.models.Genre;
 import com.group5.ArtExpress.data.models.State;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.dto.requestDto.UpdateUploadRequest;
 import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+import com.group5.ArtExpress.dto.responseDto.UpdateArtworkResponse;
+import com.group5.ArtExpress.dto.responseDto.UpdateUploadResponse;
 import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
-import com.group5.ArtExpress.repository.GenreRepository;
 import com.group5.ArtExpress.service.ArtistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.group5.ArtExpress.utils.MediaUtils.IMAGE_LOCATIONS;
-import static com.group5.ArtExpress.utils.TestUtils.getTestImage;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -113,25 +109,63 @@ public class ArtistServiceImplTest {
         assertTrue(artist.isEnabled());
     }
 
-//    @Test
-//    @DisplayName("test that artist can upload artworks")
-//    public void testUpload() {
-//        Genre genre = new Genre();
-//        genre.setGenreName("Nature");
-//
-//        UploadArtRequest uploadArtRequest = new UploadArtRequest();
-//        uploadArtRequest.setArtist(artistRequest.getBusinessName());
-//        uploadArtRequest.setGenre("Nature");
-//        uploadArtRequest.setTitle("Nature is life");
-//        uploadArtRequest.setMedium("Palm oil on nylon");
-//        uploadArtRequest.setPrice(BigDecimal.valueOf(1000000));
-//        uploadArtRequest.setSize("45x75");
-//        uploadArtRequest.setUploadDateTime(LocalDateTime.now());
-//        uploadArtRequest.setDescription("Shoot bird, Chizaram carry am run! Wayray boy.");
-//
-//        UploadArtResponse uploadArtResponse = artistService.uploadArt(uploadArtRequest);
-//
-//        assertNotNull(uploadArtResponse);
-//        assertThat(uploadArtResponse.getMessage(), is("Upload successful"));
-//    }
+    @Test
+    @DisplayName("test that artist can upload artworks")
+    public void testUpload() {
+        Genre genre = new Genre();
+        genre.setGenreName("Nature");
+
+        UploadArtRequest uploadArtRequest = new UploadArtRequest();
+        uploadArtRequest.setArtist(artistRequest.getBusinessName());
+        uploadArtRequest.setGenre("Nature");
+        uploadArtRequest.setTitle("Nature is life");
+        uploadArtRequest.setMedium("Palm oil on nylon");
+        uploadArtRequest.setPrice(BigDecimal.valueOf(1000000));
+        uploadArtRequest.setSize("45x75");
+        uploadArtRequest.setUploadDateTime(LocalDateTime.now());
+        uploadArtRequest.setDescription("Shoot bird, Chizaram carry am run! Wayray boy.");
+
+        UploadArtResponse uploadArtResponse = artistService.uploadArt(uploadArtRequest);
+
+        assertNotNull(uploadArtResponse);
+        assertThat(uploadArtResponse.getMessage()).isEqualTo("Upload successful");
+    }
+
+    @Test
+    @DisplayName("test that artwork data can be updated")
+    public void testUpdate() {
+        Genre genre = new Genre();
+        genre.setGenreName("Nature");
+
+        UploadArtRequest uploadArtRequest = new UploadArtRequest();
+        uploadArtRequest.setArtist(artistRequest.getBusinessName());
+        uploadArtRequest.setGenre("Nature");
+        uploadArtRequest.setTitle("Nature is life");
+        uploadArtRequest.setMedium("Palm oil on nylon");
+        uploadArtRequest.setPrice(BigDecimal.valueOf(1000000));
+        uploadArtRequest.setSize("45x75");
+        uploadArtRequest.setUploadDateTime(LocalDateTime.now());
+        uploadArtRequest.setDescription("Shoot bird, Chizaram carry am run! Wayray boy.");
+
+        UploadArtResponse uploadArtResponse = artistService.uploadArt(uploadArtRequest);
+
+        assertNotNull(uploadArtResponse);
+        assertThat(uploadArtResponse.getMessage()).isEqualTo("Upload successful");
+
+        UpdateUploadRequest updateUploadRequest = new UpdateUploadRequest();
+        updateUploadRequest.setArtist(artistRequest.getBusinessName());
+        updateUploadRequest.setGenre("Nature feels good");
+        updateUploadRequest.setTitle("Nature is beautiful");
+        updateUploadRequest.setMedium("Palm oil on caramel");
+        updateUploadRequest.setPrice(BigDecimal.valueOf(2000000));
+        updateUploadRequest.setSize("50x80");
+//        updateUploadRequest.setUploadDateTime(LocalDateTime.now());
+        updateUploadRequest.setDescription("Shoot bird, e mama run! Wayray boy.");
+
+        UpdateArtworkResponse response = artistService.updateUpload(1L, updateUploadRequest);
+        assertNotNull(response);
+
+        UpdateUploadResponse updatedArtwork = artistService.getArtwork(1L);
+        assertThat(updatedArtwork.getArtist()).isEqualTo(updateUploadRequest.getArtist());
+    }
 }

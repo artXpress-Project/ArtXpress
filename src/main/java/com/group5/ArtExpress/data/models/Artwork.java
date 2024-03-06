@@ -44,8 +44,8 @@ public class Artwork {
     @Column(nullable = true, name="likes")
     private int likes;
 
-    @Column(nullable = false, name="uploadDateTime")
-    private LocalDateTime uploadDateTime;
+//    @Column(nullable = true, name="uploadDateTime")
+//    private LocalDateTime uploadDateTime;
 
     @Column(nullable = true)
     private String imageLinks;
