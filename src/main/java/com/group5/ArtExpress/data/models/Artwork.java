@@ -19,7 +19,10 @@ public class Artwork {
     @Column(nullable = false, name="title")
     private String title;
 
+    @JoinColumn(nullable = true, name="genre")
+
     @JoinColumn(nullable = false)
+
     @ManyToOne
     private Genre genre;
 
@@ -48,5 +51,12 @@ public class Artwork {
 //    private LocalDateTime uploadDateTime;
 
     @Column(nullable = true)
-    private String imageLinks;
+    private StringBuffer imageLinks;
+
+    @Column(length = 1000)
+    @ElementCollection
+    private List<String> images;
+
+
+
 }

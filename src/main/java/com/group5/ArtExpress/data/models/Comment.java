@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long commentId;
 
     @Column(nullable = false, name="collectorId")
     private Long collectorId;
@@ -22,7 +22,7 @@ public class Comment {
     private Long artworkId;
 
     @Column(nullable = false, name="message")
-    private String message;
+    private String commentMessage;
 
     @Column(nullable = false, name="dateTime")
     private LocalDateTime dateTime;

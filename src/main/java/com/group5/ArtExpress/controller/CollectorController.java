@@ -84,6 +84,20 @@ public class CollectorController {
         );
     }
 
+    @GetMapping("/find/{id}")
+    public ResponseEntity<HttpResponse> getCollectorById(@PathVariable Long id){
+      Collector collector = collectorService.findCollectorById(id);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("successful", collector))
+                        .message("Collector found successful")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
 
 
 }

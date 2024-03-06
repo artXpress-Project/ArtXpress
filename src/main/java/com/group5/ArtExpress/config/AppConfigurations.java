@@ -16,19 +16,6 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfigurations {
 
-//    @Value("${mail.api.key}")
-//    private String mailApiKey;
-//
-//    @Value("${mail.api.url}")
-//    private String mailServiceUrl;
-
-//    @Value("${cloud.api.name}")
-//    private String cloudApiName;
-//    @Value("${cloud.api.key}")
-//    private String cloudApiKey;
-//    @Value("${cloud.api.secret}")
-//    private String cloudApiSecret;
-
     @Bean
     public CollectorService collectorService(){
         return new CollectorServiceImpl();
@@ -39,9 +26,22 @@ public class AppConfigurations {
     }
 
     @Bean
+    public ExhibitionEventService exhibitionEventService(){
+        return new ExhibitionEventServiceImpl();
+    }
+
+    @Bean
+    public CommentService commentService(){
+        return new CommentServiceImpl();
+    }
+
+    @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
+
+
 
 //    @Bean
 //    public RestTemplate restTemplate() {
@@ -72,6 +72,7 @@ public class AppConfigurations {
 //        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 //        return mailSender;
 //    }
+
 
 
 }

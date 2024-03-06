@@ -33,6 +33,8 @@ public class EmailServiceImpl implements EmailService{
     public static final String EMAIL_TEMPLATE = "emailTemplate";
     public static final String TEXT_HTML_ENCODING = "text/html";
 
+    public static final String EXHIBITION_TEMPLATE = "exhibitionTemplate";
+
     @Value("${spring.mail.verify.host}")
     private String host;
 
@@ -143,6 +145,57 @@ public class EmailServiceImpl implements EmailService{
             message.setFrom(fromEmail);
             message.setTo(to);
             message.setText(getEmailMessageCollector(name, host, token));
+            emailSender.send(message);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    @Async
+    public void sendHtmlEmailWithEmbeddedFilesToExhibitionAttendees(String name, String to, String token) {
+        try {
+            MimeMessage message = getMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
+            helper.setPriority(1);
+            helper.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+
+            Context context = new Context();
+            context.setVariables(Map.of("name", name, "url", getVerificationExhibitionUrl(host, token)));
+            String text = templateEngine.process(EXHIBITION_TEMPLATE, context);
+            MimeMultipart mimeMultipart = new MimeMultipart("related");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent(text, TEXT_HTML_ENCODING);
+            mimeMultipart.addBodyPart(messageBodyPart);
+
+            BodyPart imageBodyPart = new MimeBodyPart();
+            DataSource dataSource = new FileDataSource(System.getProperty("user.home") + "/Downloads/sculpture.jpg");
+            imageBodyPart.setDataHandler(new DataHandler(dataSource));
+            imageBodyPart.setHeader("Content-ID", "image");
+            mimeMultipart.addBodyPart(imageBodyPart);
+            message.setContent(mimeMultipart);
+            emailSender.send(message);
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
+    @Async
+    public void sendSimpleExhibitionMailMessage(String name, String to, String token) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
+            message.setFrom(fromEmail);
+            message.setTo(to);
+            message.setText(getEmailMessageExhibition(name, host, token));
             emailSender.send(message);
 
         } catch (Exception e) {
