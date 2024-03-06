@@ -3,7 +3,6 @@ package com.group5.ArtExpress.service;
 
 
 
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -13,10 +12,9 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
-import com.group5.ArtExpress.customException.ArtistNotEnabled;
-import com.group5.ArtExpress.customException.ArtistNotFoundException;
-import com.group5.ArtExpress.customException.ArtworkNotFoundException;
+import com.group5.ArtExpress.customException.*;
 import com.group5.ArtExpress.data.models.Artwork;
+import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.data.models.Genre;
 import com.group5.ArtExpress.dto.requestDto.*;
 import com.group5.ArtExpress.dto.responseDto.*;
@@ -27,7 +25,6 @@ import com.group5.ArtExpress.dto.responseDto.*;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
-import com.group5.ArtExpress.customException.TokenWasNotFoundException;
 
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
@@ -39,8 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
@@ -251,6 +246,12 @@ public class ArtistServiceImpl implements ArtistService{
                         String.format("Artwork with id %d not found", artworkId)
                 ));
         return buildArtworkResponse(foundArtwork);
+    }
+
+    @Override
+    public Artwork findArtworkById(Long artworkId) {
+        return artworkRepository.findById(artworkId).
+                orElseThrow(()-> new IdNotFoundException("Id" + " " + artworkId + " " + "Does not Exist"));
     }
 
     private UpdateUploadResponse buildArtworkResponse(Artwork foundArtwork) {

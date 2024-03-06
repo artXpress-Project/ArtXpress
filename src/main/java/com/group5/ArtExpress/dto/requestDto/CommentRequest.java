@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class CommentRequest {
-    private Comment comment;
+    private String comment;
     private Long artworkId;
     private Long collectorId;
 }
