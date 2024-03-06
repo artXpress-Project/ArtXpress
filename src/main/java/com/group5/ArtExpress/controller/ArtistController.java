@@ -1,13 +1,20 @@
 package com.group5.ArtExpress.controller;
 
 import com.group5.ArtExpress.data.models.Artist;
+
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+
+import com.group5.ArtExpress.dto.requestDto.*;
+
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
+import com.group5.ArtExpress.dto.responseDto.UpdateArtworkResponse;
+import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.http.HttpResponse;
 
-import com.group5.ArtExpress.repository.LogoutRequest;
+
+
 
 
 
@@ -29,7 +36,7 @@ public class ArtistController {
     private ArtistService artistService;
 
 
-     @PostMapping
+    @PostMapping
     public ResponseEntity<HttpResponse> registerArtist(@RequestBody ArtistRequest artistRequest){
          Artist artist = artistService.register(artistRequest);
          return ResponseEntity.created(URI.create("")).body(
@@ -56,7 +63,11 @@ public class ArtistController {
                         .build()
         );
 
+
     }
+
+
+
 
 
     @PostMapping("/login")
@@ -80,6 +91,30 @@ public class ArtistController {
             );
         }
      }
+
+    @PostMapping("/uploads")
+    public ResponseEntity<HttpResponse> uploadArtwork(@RequestBody UploadArtRequest uploadArtRequest) {
+         UploadArtResponse uploadArtResponse = artistService.uploadArt(uploadArtRequest);
+         try {
+             return ResponseEntity.ok().body(
+                     HttpResponse.builder()
+                             .timeStamp(LocalDateTime.now().toString())
+                             .data(Map.of(uploadArtResponse.getMessage(), uploadArtResponse.getStatusCode()))
+                             .build()
+             );
+         } catch (Exception e) {
+             return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                     .body(
+                             HttpResponse.builder()
+                                     .timeStamp(LocalDateTime.now().toString())
+                                     .data(Map.of("Media type unsupported", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+                                     .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                                     .statusCode(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+                                     .build()
+                     );
+         }
+    }
+
      @PostMapping("/logout")
      public ResponseEntity<HttpResponse> logout(@RequestBody LogoutRequest logoutRequest){
          MessageResponse messageResponse = artistService.logout(logoutRequest);
@@ -88,8 +123,22 @@ public class ArtistController {
                              .timeStamp(LocalDateTime.now().toString())
                              .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
                              .build()
-             );
+            );
 
      }
 
+
+    @PatchMapping("/update/{artworkId}")
+    public ResponseEntity<HttpResponse> updateUpload(@PathVariable Long artworkId, UpdateUploadRequest request) {
+        UpdateArtworkResponse response = artistService.updateUpload(artworkId, request);
+
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of(response.getMessage(), response.getStatusCode()))
+                        .build()
+        );
+
+
+    }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "artist")
 public class Artist extends User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -36,7 +37,7 @@ public class Artist extends User {
     @Embedded
     private Location location;
 
-    @Column(nullable = false, name = "artworks")
+    @Column(nullable = true, name = "artworks")
     @OneToMany
     private List<Artwork> artworks;
 

@@ -23,4 +23,8 @@ public class Genre {
     @Column(name="artWork")
     @OneToMany
     private List<Artwork> artwork;
+
+    @Column(nullable = true, name="artWork links")
+    private String link;
+
 }

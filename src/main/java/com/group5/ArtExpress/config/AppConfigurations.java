@@ -43,4 +43,36 @@ public class AppConfigurations {
 
 
 
+//    @Bean
+//    public RestTemplate restTemplate() {
+//        return new RestTemplate();
+//    }
+
+
+//    @Bean
+//    public Cloudinary cloudinary() {
+//        Cloudinary cloudinary = new Cloudinary(
+//                ObjectUtils.asMap(
+//                        "cloud_name", getCloudApiName(),
+//                        "api_key", getCloudApiKey(),
+//                        "api_secret", getCloudApiSecret()
+//                )
+//        );
+//        return cloudinary;
+//
+//    }
+
+//    @Bean
+//    public EmailService emailService(JavaMailSender emailSender, TemplateEngine templateEngine){
+//        return new EmailServiceImpl(emailSender,templateEngine);
+//    }
+
+//    @Bean
+//    public JavaMailSender javaMailSender() {
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//        return mailSender;
+//    }
+
+
+
 }
