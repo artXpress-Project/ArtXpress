@@ -1,12 +1,15 @@
 package com.group5.ArtExpress.service;
 
 import com.group5.ArtExpress.data.models.Artist;
+import com.group5.ArtExpress.data.models.Artwork;
 import com.group5.ArtExpress.dto.requestDto.*;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.dto.responseDto.UpdateArtworkResponse;
 import com.group5.ArtExpress.dto.responseDto.UpdateUploadResponse;
 import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public interface ArtistService {
@@ -21,4 +24,6 @@ public interface ArtistService {
     UpdateArtworkResponse updateUpload(Long artworkId, UpdateUploadRequest updateUploadRequest);
 
     UpdateUploadResponse getArtwork(long l);
+
+    Artwork findArtworkById(Long artworkId);
 }

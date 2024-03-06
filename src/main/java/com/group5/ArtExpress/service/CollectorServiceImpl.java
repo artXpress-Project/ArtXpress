@@ -1,6 +1,7 @@
 package com.group5.ArtExpress.service;
 
 
+import com.group5.ArtExpress.customException.ActionForbiddenAttempt;
 import com.group5.ArtExpress.customException.IdNotFoundException;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
@@ -100,8 +101,13 @@ public class CollectorServiceImpl implements CollectorService{
     }
 
     @Override
-    public Collector findCollectorById(Long id) {
-        return collectorRepo.findById(id).orElseThrow(()-> new IdNotFoundException("Id" + " " + id + " " + "Does not Exist"));
+    public Collector findById(Long id) {
+        Collector collector = collectorRepo.findById(id).orElseThrow(()-> new IdNotFoundException("Id" + " " + id + " " + "Does not Exist"));
+        boolean isUnlockedCollector = collector.isLocked();
+        if (collector.isEnabled() && isUnlockedCollector) {
+            return collector;
+        }
+        else throw new ActionForbiddenAttempt("Impossible action");
     }
 
 

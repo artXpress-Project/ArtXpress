@@ -51,7 +51,7 @@ public class Artwork {
 //    private LocalDateTime uploadDateTime;
 
     @Column(nullable = true)
-    private StringBuffer imageLinks;
+    private String imageLinks;
 
     @Column(length = 1000)
     @ElementCollection
