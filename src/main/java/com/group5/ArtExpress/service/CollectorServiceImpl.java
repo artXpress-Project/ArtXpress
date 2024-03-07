@@ -102,12 +102,10 @@ public class CollectorServiceImpl implements CollectorService{
 
     @Override
     public Collector findById(Long id) {
-        Collector collector = collectorRepo.findById(id).orElseThrow(()-> new IdNotFoundException("Id" + " " + id + " " + "Does not Exist"));
-        boolean isUnlockedCollector = collector.isLocked();
-        if (collector.isEnabled() && isUnlockedCollector) {
-            return collector;
-        }
-        else throw new ActionForbiddenAttempt("Impossible action");
+        Collector collector;
+        collector = collectorRepo.findById(id)
+                .orElseThrow(()-> new IdNotFoundException("Id " + id + " Does not Exist"));
+        return collector;
     }
 
 

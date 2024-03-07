@@ -13,9 +13,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 import com.group5.ArtExpress.customException.*;
-import com.group5.ArtExpress.data.models.Artwork;
-import com.group5.ArtExpress.data.models.Collector;
-import com.group5.ArtExpress.data.models.Genre;
+import com.group5.ArtExpress.data.models.*;
 import com.group5.ArtExpress.dto.requestDto.*;
 import com.group5.ArtExpress.dto.responseDto.*;
 
@@ -26,7 +24,6 @@ import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 
-import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
 import com.group5.ArtExpress.repository.ArtworkRepository;
@@ -66,6 +63,8 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Autowired
     private GenreRepository genreRepository;
+    @Autowired
+    private CommentService commentService;
 
 //    @Autowired
 //    private BrevoMailService brevoMailService;
@@ -251,7 +250,7 @@ public class ArtistServiceImpl implements ArtistService{
     @Override
     public Artwork findArtworkById(Long artworkId) {
         return artworkRepository.findById(artworkId).
-                orElseThrow(()-> new IdNotFoundException("Id" + " " + artworkId + " " + "Does not Exist"));
+                orElseThrow(()-> new IdNotFoundException("Id " + artworkId + " Does not Exist"));
     }
 
     private UpdateUploadResponse buildArtworkResponse(Artwork foundArtwork) {
@@ -266,6 +265,19 @@ public class ArtistServiceImpl implements ArtistService{
 //        response.setUploadDateTime(foundArtwork.getUploadDateTime());
 
         return response;
+    }
+
+    @Override
+    public ReplyCommentResponse replyComment(long commentId, ReplyCommentRequest replyComment) {
+        Comment foundComment = commentService.findById(commentId);
+
+        foundComment.setCommentMessage(replyComment.getCommentReply());
+        commentService.save(foundComment);
+
+        ReplyCommentResponse replyCommentResponse = new ReplyCommentResponse();
+        replyCommentResponse.setResponseMessage(replyComment.getCommentReply());
+
+        return replyCommentResponse;
     }
 
 }

@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 public interface CommentService {
     CommentResponse createComment(Long commentId, Long artworkId, CommentRequest commentRequest);
 
-    public Comment findCommentById(Long commentId);
-
     public Comment likeComment (LikeCommentRequest likeCommentRequest);
 
     public Comment UnlikeComment (LikeCommentRequest likeCommentRequest);
+
+    Long count();
+
+    Comment findById(long commentId);
+
+    void save(Comment foundComment);
 }
