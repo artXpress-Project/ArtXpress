@@ -4,30 +4,29 @@ import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Comment;
 import com.group5.ArtExpress.data.models.Genre;
 import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-public class UploadArtRequest {
+@Data
+public class ArtworkRequest {
+    private Artist artist;
+
     private String title;
-    private String genre;
-    private String description;
-    private String artist;
+
     private String medium;
+
     private String size;
-    private StringBuffer imageLink;
+
     private BigDecimal price;
-    private LocalDateTime uploadDateTime;
+
+    private Genre genre;
+
+    private String description;
+
+    private List<String> images;
+
+
 }
-
-
-

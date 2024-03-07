@@ -15,14 +15,28 @@ public interface ArtistService {
 
     MessageResponse login(LoginRequest loginRequest);
 
-    UploadArtResponse uploadArt(UploadArtRequest uploadArtRequest);
+    Artist findArtistById(Long id);
+
+//    UploadArtResponse uploadArt(UploadArtRequest uploadArtRequest);
     MessageResponse logout(LogoutRequest logoutRequest);
 
-    UpdateArtworkResponse updateUpload(Long artworkId, UpdateUploadRequest updateUploadRequest);
+//    UpdateArtworkResponse updateUpload(Long artworkId, UpdateUploadRequest updateUploadRequest);
+//
+//    UpdateUploadResponse getArtwork(long l);
+
+    Artwork uploadArtworkByAnArtist(ArtworkRequest request, Artist artist);
+
+    Artwork updateArtworkByAnArtist(Long id,ArtworkRequest update);
+
+    MessageResponse deleteArtworkByAnArtist(Long artWorkId);
+
+
+    Artwork findArtWorkByArtist(Long artistId);
 
     UpdateUploadResponse getArtwork(long l);
 
     Artwork findArtworkById(Long artworkId);
 
     ReplyCommentResponse replyComment(long l, ReplyCommentRequest replyComment);
+
 }

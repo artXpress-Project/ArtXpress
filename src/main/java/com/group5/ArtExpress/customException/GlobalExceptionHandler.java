@@ -62,12 +62,39 @@ public class GlobalExceptionHandler {
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
                         .data(Map.of("Id Exception", exception.getMessage()))
-                        .message("Bad request")
+                        .message("Does not exist")
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .build()
         );
     }
+
+    @ExceptionHandler(ArtworkNotFoundException.class)
+    public ResponseEntity<HttpResponse> artWorkFoundException(ArtworkNotFoundException exception){
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("Artwork Exception", exception.getMessage()))
+                        .message("Does not exist")
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(NoListOfArtworkWithThatParticularGenre.class)
+    public ResponseEntity<HttpResponse> artWorkWithThatGenreFoundException(NoListOfArtworkWithThatParticularGenre exception){
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("Artwork Exception", exception.getMessage()))
+                        .message("Does not exist")
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .build()
+        );
+    }
+
 
 
 

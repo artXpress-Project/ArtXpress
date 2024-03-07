@@ -19,11 +19,9 @@ public class Artwork {
     @Column(nullable = false, name="title")
     private String title;
 
-    @JoinColumn(nullable = true, name="genre")
-
     @JoinColumn(nullable = false)
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Genre genre;
 
     @JoinColumn(nullable = false, name="description")
@@ -47,11 +45,14 @@ public class Artwork {
     @Column(nullable = true, name="likes")
     private int likes;
 
-//    @Column(nullable = true, name="uploadDateTime")
-//    private LocalDateTime uploadDateTime;
+    @Column(nullable = true, name="uploadDateTime")
+    private LocalDateTime uploadDateTime;
+
+
 
     @Column(nullable = true)
     private String imageLinks;
+
 
     @Column(length = 1000)
     @ElementCollection
