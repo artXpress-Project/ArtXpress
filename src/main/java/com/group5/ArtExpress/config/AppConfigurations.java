@@ -40,6 +40,11 @@ public class AppConfigurations {
         return new ModelMapper();
     }
 
+    @Bean
+    public ArtworkService artworkService(){
+        return new ArtworkServiceImpl();
+    }
+
 
 
 

@@ -1,8 +1,10 @@
 package com.group5.ArtExpress.utils;
 
 import com.group5.ArtExpress.data.models.Artist;
+import com.group5.ArtExpress.data.models.Artwork;
 import com.group5.ArtExpress.data.models.Location;
 import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
+import com.group5.ArtExpress.dto.requestDto.ArtworkRequest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,5 +21,6 @@ public class Mapper {
         artist.setDateTime(LocalDateTime.now());
         artist.setArtworks(new ArrayList<>());
     }
+
 
 }

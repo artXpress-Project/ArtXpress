@@ -49,4 +49,8 @@ public class Artist extends User {
 
     @Column(nullable = false, name = "isLocked")
     private boolean isLocked;
+
+    private String twitter;
+    private String linkDn;
+    private String instagram;
 }

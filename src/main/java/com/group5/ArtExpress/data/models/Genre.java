@@ -19,12 +19,8 @@ public class Genre {
     @Column(nullable = false, name="genreName")
     private String genreName;
 
-    @JsonIgnore
-    @Column(name="artWork")
-    @OneToMany
-    private List<Artwork> artwork;
+    @Column(nullable = false, name="genreDescription")
+    private String genreDescription;
 
-    @Column(nullable = true, name="artWork links")
-    private String link;
 
 }
