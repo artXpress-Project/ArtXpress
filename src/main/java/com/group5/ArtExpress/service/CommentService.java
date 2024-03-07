@@ -3,15 +3,20 @@ package com.group5.ArtExpress.service;
 import com.group5.ArtExpress.data.models.Comment;
 import com.group5.ArtExpress.dto.requestDto.CommentRequest;
 import com.group5.ArtExpress.dto.requestDto.LikeCommentRequest;
+import com.group5.ArtExpress.dto.responseDto.CommentResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CommentService {
-    Comment createComment(CommentRequest commentResponse);
-
-    public Comment findCommentById(Long commentId);
+    CommentResponse createComment(Long commentId, Long artworkId, CommentRequest commentRequest);
 
     public Comment likeComment (LikeCommentRequest likeCommentRequest);
 
     public Comment UnlikeComment (LikeCommentRequest likeCommentRequest);
+
+    Long count();
+
+    Comment findById(long commentId);
+
+    void save(Comment foundComment);
 }

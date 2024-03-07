@@ -50,6 +50,10 @@ public class Artwork {
 
 
 
+    @Column(nullable = true)
+    private String imageLinks;
+
+
     @Column(length = 1000)
     @ElementCollection
     private List<String> images;

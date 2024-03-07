@@ -63,13 +63,7 @@ public class ArtistController {
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
-
-
     }
-
-
-
-
 
     @PostMapping("/login")
     public ResponseEntity<HttpResponse> login(@RequestBody LoginRequest loginRequest){
@@ -125,7 +119,6 @@ public class ArtistController {
                              .data(Map.of(messageResponse.getMessage(), messageResponse.getStatusCode()))
                              .build()
             );
-
      }
 
 
@@ -158,6 +151,8 @@ public class ArtistController {
                         .statusCode(HttpStatus.CREATED.value())
                         .build()
         );
+
     }
+
 
     }

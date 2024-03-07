@@ -4,14 +4,8 @@ import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Genre;
 import com.group5.ArtExpress.data.models.State;
-import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
-import com.group5.ArtExpress.dto.requestDto.LoginRequest;
-import com.group5.ArtExpress.dto.requestDto.UpdateUploadRequest;
-import com.group5.ArtExpress.dto.requestDto.UploadArtRequest;
-import com.group5.ArtExpress.dto.responseDto.MessageResponse;
-import com.group5.ArtExpress.dto.responseDto.UpdateArtworkResponse;
-import com.group5.ArtExpress.dto.responseDto.UpdateUploadResponse;
-import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
+import com.group5.ArtExpress.dto.requestDto.*;
+import com.group5.ArtExpress.dto.responseDto.*;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
@@ -71,10 +65,10 @@ public class ArtistServiceImplTest {
         artistRequest.setLga("ghf rhrgfgd sd");
         artistRequest.setBusinessName("ghfyrhdd");
         artistRequest.setPhoneNumber("09567456382");
-        ArtistConfirmation confirmation = new ArtistConfirmation(artist);
-        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(), artist.getEmail(), confirmation.getToken());
-        System.out.println(confirmation.getToken());
-        System.out.println(artist.isEnabled());
+//        ArtistConfirmation confirmation = new ArtistConfirmation(artist);
+//        emailService.sendHtmlEmailWithEmbeddedFiles(artist.getFirstName(), artist.getEmail(), confirmation.getToken());
+//        System.out.println(confirmation.getToken());
+//        System.out.println(artist.isEnabled());
         Artist artists = artistService.register(artistRequest);
         assertNotNull(artists);
     }
@@ -167,5 +161,17 @@ public class ArtistServiceImplTest {
 
         UpdateUploadResponse updatedArtwork = artistService.getArtwork(1L);
         assertThat(updatedArtwork.getArtist()).isEqualTo(updateUploadRequest.getArtist());
+    }
+
+    @Test
+    @DisplayName("test that artist can reply comment")
+    public void testReplyComment() {
+        ReplyCommentRequest replyComment = new ReplyCommentRequest();
+
+        replyComment.setCommentId(1L);
+        replyComment.setCommentReply("Thanks for the compliments.");
+
+        ReplyCommentResponse commentResponse = artistService.replyComment(1L, replyComment);
+
     }
 }

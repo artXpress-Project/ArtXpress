@@ -16,5 +16,5 @@ public interface CollectorService {
 
     MessageResponse logout(LogoutRequest logoutRequest);
 
-    Collector findCollectorById(Long id);
+    Collector findById(Long collectorId);
 }

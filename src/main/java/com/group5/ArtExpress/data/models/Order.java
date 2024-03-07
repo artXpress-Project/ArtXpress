@@ -18,14 +18,12 @@ public class Order {
     private Long id;
     private String address;
     private Long totalAmount;
-     @ManyToOne
+    @ManyToOne
     private Collector collector;
     private String orderStatus;
     private Date createdAt;
-
     private int totalItem;
     private int totalPrice;
-
     @OneToMany
     private List<OrderItem> items;
 }
