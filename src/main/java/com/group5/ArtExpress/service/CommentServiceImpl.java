@@ -1,5 +1,7 @@
 package com.group5.ArtExpress.service;
 
+import com.group5.ArtExpress.customException.ActionForbiddenAttempt;
+import com.group5.ArtExpress.customException.IdNotFoundException;
 import com.group5.ArtExpress.data.models.Artwork;
 import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.data.models.Comment;
@@ -11,6 +13,8 @@ import com.group5.ArtExpress.repository.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+
+import static com.group5.ArtExpress.utils.Mapper.mapComment;
 
 public class CommentServiceImpl implements CommentService{
      @Autowired
@@ -24,23 +28,22 @@ public class CommentServiceImpl implements CommentService{
       Collector foundCollector = collectorService.findById(collectorId);
       Artwork foundArtwork = artistService.findArtworkById(artworkId);
 
-      Comment newComment = new Comment();
-      newComment.setCollectorId(foundCollector.getCollectorId());
-      newComment.setArtworkId(foundArtwork.getArtworkId());
-      newComment.setCommentMessage(commentRequest.getComment());
-      newComment.setDateTime(LocalDateTime.now());
+        checkCollectorStatus(commentRequest, foundCollector, foundArtwork);
 
-      commentRepo.save(newComment);
-
-      CommentResponse response = new CommentResponse();
+        CommentResponse response = new CommentResponse();
       response.setComment(commentRequest.getComment());
 
       return response;
     }
 
-    @Override
-    public Comment findCommentById(Long commentId) {
-        return null;
+    private void checkCollectorStatus(CommentRequest commentRequest, Collector foundCollector, Artwork foundArtwork) {
+        boolean isUnlockedCollector = foundCollector.isLocked();
+        if (foundCollector.isEnabled() && isUnlockedCollector) {
+            Comment newComment = mapComment(commentRequest, foundCollector, foundArtwork);
+
+            commentRepo.save(newComment);
+        }
+        else throw new ActionForbiddenAttempt("Unauthorized action");
     }
 
     @Override
@@ -51,5 +54,23 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public Comment UnlikeComment(LikeCommentRequest likeCommentRequest) {
         return null;
+    }
+
+    @Override
+    public Long count() {
+        return commentRepo.count();
+    }
+
+    @Override
+    public Comment findById(long commentId) {
+        Comment foundComment;
+        foundComment = commentRepo.findById(commentId)
+                .orElseThrow(()-> new IdNotFoundException("Comment with " + commentId + " was not found"));
+        return foundComment;
+    }
+
+    @Override
+    public void save(Comment foundComment) {
+        commentRepo.save(foundComment);
     }
 }
