@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -23,7 +24,7 @@ public class ExhibitionEventRegistration {
     @Column(name="phone_Number", nullable = false, unique = true)
     private String phoneNumber;
     private boolean isEnabled;
-    private LocalDateTime dateRegistered;
+    private LocalDate dateRegistered;
 
 
 }

@@ -12,6 +12,7 @@ import com.group5.ArtExpress.dto.requestDto.ArtistRequest;
 import com.group5.ArtExpress.dto.requestDto.CommentRequest;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class Mapper {
         location.setAddress(request.getAddress());
         artist.setLocation(location);
         artist.setEnabled(false);
-        artist.setDateTime(LocalDateTime.now());
+        artist.setDateTime(LocalDate.now());
         artist.setArtworks(new ArrayList<>());
     }
 
@@ -35,7 +36,7 @@ public class Mapper {
         newComment.setCollectorId(foundCollector.getCollectorId());
         newComment.setArtworkId(foundArtwork.getArtworkId());
         newComment.setCommentMessage(commentRequest.getComment());
-        newComment.setDateTime(LocalDateTime.now());
+        newComment.setDateTime(LocalDate.now());
 
         return newComment;
     }

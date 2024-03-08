@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class Artist extends User {
     private boolean isEnabled;
 
     @Column(nullable = false, name = "dateTime")
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
 
     @Column(nullable = false, name = "isLocked")
     private boolean isLocked;
