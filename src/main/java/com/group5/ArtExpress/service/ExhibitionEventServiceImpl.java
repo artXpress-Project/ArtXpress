@@ -12,6 +12,7 @@ import com.group5.ArtExpress.repository.ExhibitionEventRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ExhibitionEventServiceImpl implements ExhibitionEventService{
         emailVerificationService.verifyEmailFormat(exhibitionRegistration.getEmail());
         ExhibitionEventRegistration eventRegistration = modelMapper.map(exhibitionRegistration, ExhibitionEventRegistration.class);
         eventRegistration.setEnabled(false);
-        eventRegistration.setDateRegistered(LocalDateTime.now());
+        eventRegistration.setDateRegistered(LocalDate.now());
         ExhibitionEventRegistration registration = exhibitionEventRepo.save(eventRegistration);
 
         ExhibitionConfirmation exhibitionConfirmation = new ExhibitionConfirmation(registration);

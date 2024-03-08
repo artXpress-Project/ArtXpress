@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,7 +51,7 @@ public class CollectorServiceImpl implements CollectorService{
 //        String encodedPassword = passwordEncoder.encode(collectorRequest.getPassword());
 //        collector.setPassword(encodedPassword);
         collector.setEnabled(false);
-        collector.setDateTime(LocalDateTime.now());
+        collector.setDateTime(LocalDate.now());
         Collector collects = collectorRepo.save(collector);
 
 

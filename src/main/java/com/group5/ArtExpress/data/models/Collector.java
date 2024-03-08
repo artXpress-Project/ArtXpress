@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
@@ -23,7 +24,7 @@ public class Collector extends User {
     private String address;
 
     @Column(nullable = false, name="dateTime")
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
 
     @Column(nullable = false, name="isEnabled")
     private boolean isEnabled;

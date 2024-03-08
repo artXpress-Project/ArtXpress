@@ -5,6 +5,7 @@ import lombok.Data;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class Artwork {
     private int likes;
 
     @Column(nullable = true, name="uploadDateTime")
-    private LocalDateTime uploadDateTime;
+    private LocalDate uploadDateTime;
 
 
 
