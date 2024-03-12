@@ -13,7 +13,7 @@ artXpress is an online platform for art enthusiasts to explore and purchase artw
 ## Technologies Used
 
 - **Backend**: Spring Framework
-- **Frontend**: TypeScript
+- **Frontend**: JavaScript
 - **Database**: [MySql]
 - **Deployment**: [-]
 

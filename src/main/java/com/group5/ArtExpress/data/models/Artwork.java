@@ -5,6 +5,7 @@ import lombok.Data;
 
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Artwork {
     private boolean available;
 
     @Column(nullable = true, name="uploadDateTime")
-    private LocalDateTime uploadDateTime;
+    private LocalDate uploadDateTime;
 
     @Column(length = 1000)
     @ElementCollection

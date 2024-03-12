@@ -17,6 +17,7 @@ import com.group5.ArtExpress.repository.GenreRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +44,8 @@ public class ArtworkServiceImpl implements ArtworkService{
         artwork.setArtist(artist);
         artwork.setEmail(artist.getEmail());
         artwork.setUploadDateTime(LocalDateTime.now());
+        artwork.setUploadDateTime(LocalDate.now());
+
 
         return artworkRepository.save(artwork);
     }
@@ -58,7 +61,7 @@ public class ArtworkServiceImpl implements ArtworkService{
         if(artwork.getSize() != null) artwork.setSize(update.getSize());
         Genre genre = genreRepo.findGenreByGenreName(update.getGenre().getGenreName());
         if(genre != null) artwork.setGenre(update.getGenre());
-        artwork.setUploadDateTime(LocalDateTime.now());
+        artwork.setUploadDateTime(LocalDate.now());
         return artworkRepository.save(artwork);
 
     }

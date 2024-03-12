@@ -255,6 +255,11 @@ public class ArtistServiceImpl implements ArtistService{
                 orElseThrow(()-> new IdNotFoundException("Id " + artworkId + " Does not Exist"));
     }
 
+    @Override
+    public UpdateUploadResponse getArtwork(long l) {
+        return null;
+    }
+
 //    private UpdateUploadResponse buildArtworkResponse(Artwork foundArtwork) {
 //        UpdateUploadResponse response = new UpdateUploadResponse();
 //        response.setArtist(foundArtwork.getArtist().getBusinessName());

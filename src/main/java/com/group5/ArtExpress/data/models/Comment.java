@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -28,7 +29,9 @@ public class Comment {
     private String commentMessage;
 
     @Column(nullable = false, name="dateTime")
+
     private LocalDateTime dateTime;
 
+    private LocalDate dateTime;
 
 }
