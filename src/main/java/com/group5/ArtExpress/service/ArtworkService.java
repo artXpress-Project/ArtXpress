@@ -2,7 +2,9 @@ package com.group5.ArtExpress.service;
 
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Artwork;
+import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.data.models.Genre;
+import com.group5.ArtExpress.dto.ArtworkDto;
 import com.group5.ArtExpress.dto.requestDto.ArtworkRequest;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public interface ArtworkService {
 
     MessageResponse deleteArtwork(Long artWorkId);
 
-    Artwork findArtWorkByArtist(Long artistId);
+    List<Artwork> findArtWorkByArtist(Long artistId);
 
     Artwork findArtWorkById(Long id);
 
@@ -25,6 +27,12 @@ public interface ArtworkService {
     List<Artwork> findAllArtwork();
 
     List<Artwork> findArtworkByArtistBusinessName(String businessName);
+
+    ArtworkDto addToFavourite(Long restaurantId, Collector collector);
+
+    Artwork updateAvailabilityStatus(Long artworkId);
+
+
 
 
 

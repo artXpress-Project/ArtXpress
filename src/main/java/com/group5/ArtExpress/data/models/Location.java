@@ -17,4 +17,7 @@ public class Location {
 
     @Column(nullable = false, name="address")
     private String address;
+
+    private String city;
+    private String country;
 }

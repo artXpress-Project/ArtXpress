@@ -1,4 +1,4 @@
-package com.group5.ArtExpress.repository;
+package com.group5.ArtExpress.dto.requestDto;
 
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Genre;

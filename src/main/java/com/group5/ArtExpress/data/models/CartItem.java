@@ -23,6 +23,9 @@ public class CartItem {
     private Cart cart;
     private int Quantity;
 
+    @ManyToOne
+    private Artwork artwork;
+
     @ElementCollection
     private List<String> toolsUsed;
 

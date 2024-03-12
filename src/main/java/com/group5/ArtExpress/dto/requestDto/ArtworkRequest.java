@@ -8,23 +8,26 @@ import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class ArtworkRequest {
     private Artist artist;
-
+    private String email;
     private String title;
 
     private String medium;
 
     private String size;
 
-    private BigDecimal price;
+    private Long price;
 
     private Genre genre;
-
+    private int likes;
     private String description;
+    private List<Comment> comments;
 
     private List<String> images;
 

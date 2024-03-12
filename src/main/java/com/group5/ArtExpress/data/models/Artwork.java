@@ -7,7 +7,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,7 +23,6 @@ public class Artwork {
     private String title;
 
     @JoinColumn(nullable = false)
-
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Genre genre;
 
@@ -37,27 +38,29 @@ public class Artwork {
     private String size;
 
     @Column(nullable = false, name="bigDecimal")
-    private BigDecimal price;
+    private Long price;
 
     @Column(nullable = true, name="comment")
-    @OneToMany
+    @OneToMany(mappedBy = "artwork",cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @Column(nullable = false)
+    private String email;
 
     @Column(nullable = true, name="likes")
     private int likes;
 
+    private boolean available;
+
     @Column(nullable = true, name="uploadDateTime")
     private LocalDate uploadDateTime;
-
-
-
-    @Column(nullable = true)
-    private String imageLinks;
-
 
     @Column(length = 1000)
     @ElementCollection
     private List<String> images;
+
+
+
 
 
 

@@ -6,6 +6,7 @@ import com.group5.ArtExpress.dto.requestDto.*;
 import com.group5.ArtExpress.dto.responseDto.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,19 +25,21 @@ public interface ArtistService {
 //
 //    UpdateUploadResponse getArtwork(long l);
 
-    Artwork uploadArtworkByAnArtist(ArtworkRequest request, Artist artist);
+    Artwork uploadArtworkByAnArtist(ArtworkRequest request,Artist artist);
 
     Artwork updateArtworkByAnArtist(Long id,ArtworkRequest update);
 
     MessageResponse deleteArtworkByAnArtist(Long artWorkId);
 
 
-    Artwork findArtWorkByArtist(Long artistId);
+    List<Artwork> findArtWorkByArtist(Long artistId);
 
     UpdateUploadResponse getArtwork(long l);
 
     Artwork findArtworkById(Long artworkId);
 
     ReplyCommentResponse replyComment(long l, ReplyCommentRequest replyComment);
+
+    MessageResponse deleteArtist(Long id);
 
 }

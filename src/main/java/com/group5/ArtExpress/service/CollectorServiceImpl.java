@@ -3,6 +3,10 @@ package com.group5.ArtExpress.service;
 
 import com.group5.ArtExpress.customException.ActionForbiddenAttempt;
 import com.group5.ArtExpress.customException.IdNotFoundException;
+import com.group5.ArtExpress.customException.LockException;
+import com.group5.ArtExpress.data.models.Artist;
+import com.group5.ArtExpress.data.models.Artwork;
+import com.group5.ArtExpress.data.models.Cart;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
@@ -12,6 +16,7 @@ import com.group5.ArtExpress.customException.TokenWasNotFoundException;
 import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
+import com.group5.ArtExpress.repository.CartRepository;
 import com.group5.ArtExpress.repository.CollectorConfirmationRepo;
 import com.group5.ArtExpress.repository.CollectorRepo;
 import com.group5.ArtExpress.dto.requestDto.LogoutRequest;
@@ -22,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -39,10 +45,15 @@ public class CollectorServiceImpl implements CollectorService{
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
     private EmailVerificationService emailVerificationService;
 
     @Autowired
     private CollectorConfirmationRepo collectorConfirmationRepo;
+    @Autowired
+    private ArtworkService artworkService;
     @Override
     public Collector registerCollector(CollectorRequest collectorRequest) {
         emailVerificationService.ifCollectorEmailAlreadyExist(collectorRequest.getEmail());
@@ -53,6 +64,10 @@ public class CollectorServiceImpl implements CollectorService{
         collector.setEnabled(false);
         collector.setDateTime(LocalDate.now());
         Collector collects = collectorRepo.save(collector);
+        Cart cart = new Cart();
+        cart.setCollector(collects);
+        cartRepository.save(cart);
+
 
 
         CollectorConfirmation confirmation = new CollectorConfirmation(collects);
@@ -70,6 +85,7 @@ public class CollectorServiceImpl implements CollectorService{
         if(confirmation == null) throw new TokenWasNotFoundException("Could not find token");
         Collector collector = collectorRepo.findByEmailIgnoreCase(confirmation.getCollector().getEmail());
         collector.setEnabled(true);
+        collector.setLocked(true);
         collectorRepo.save(collector);
         return Boolean.TRUE;
     }
@@ -77,9 +93,9 @@ public class CollectorServiceImpl implements CollectorService{
     @Override
     public MessageResponse login(LoginRequest loginRequest) {
         Collector collector = emailVerificationService.findCollectorEmail(loginRequest.getEmail());
-        if(collector != null && collector.getPassword().equals(loginRequest.getPassword())){
+        collector.setLocked(false);
+        if( collector.getPassword().equals(loginRequest.getPassword())){
             if(collector.isEnabled()) {
-                collector.setLocked(false);
                 collectorRepo.save(collector);
                 return new MessageResponse("Login successful. \n", 200);
             }
@@ -91,8 +107,8 @@ public class CollectorServiceImpl implements CollectorService{
     @Override
     public MessageResponse logout(LogoutRequest logoutRequest) {
         Collector collector = emailVerificationService.findCollectorEmail(logoutRequest.getEmail());
+        collector.setLocked(true);
         if(collector.isEnabled()) {
-            collector.setLocked(true);
             collectorRepo.save(collector);
             return new MessageResponse("Logout successful",
                     200);
@@ -110,6 +126,21 @@ public class CollectorServiceImpl implements CollectorService{
     }
 
 
+
+    @Override
+    public List<Artwork> findArtworkByArtistBusinessName(String businessName) {
+            return artworkService.findArtworkByArtistBusinessName(businessName);
+    }
+
+    @Override
+    public List<Artwork> searchArtwork(String genre) {
+            return artworkService.searchArtwork(genre);
+    }
+
+    @Override
+    public List<Artwork> findAllArtwork() {
+        return artworkService.findAllArtwork();
+    }
 
 
 }

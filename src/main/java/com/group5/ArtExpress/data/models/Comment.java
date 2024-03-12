@@ -16,15 +16,22 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
 
-    @Column(nullable = false, name="collectorId")
-    private Long collectorId;
+//    @Column(nullable = false, name="collectorId")
+//    private Long collectorId;
+//
+//    @Column(nullable = false, name="aetworkId")
+//    private Long artworkId;
 
-    @Column(nullable = false, name="aetworkId")
-    private Long artworkId;
+    @ManyToOne
+    private Artwork artwork;
 
     @Column(nullable = false, name="message")
     private String commentMessage;
 
     @Column(nullable = false, name="dateTime")
+
+    private LocalDateTime dateTime;
+
     private LocalDate dateTime;
+
 }

@@ -23,4 +23,8 @@ public class ArtistRequest {
     private List<Artwork> artworks;
     private boolean isEnabled;
     private LocalDateTime dateTime;
+    private String city;
+    private String Country;
+    private List<String> profileImages ;
+
 }

@@ -45,6 +45,17 @@ public class AppConfigurations {
         return new ArtworkServiceImpl();
     }
 
+    @Bean
+    public CartService cartService(){
+        return new CartServiceImpl();
+    }
+
+    @Bean
+    public OrderService orderService(){
+        return new OrderServiceImpl();
+    }
+
+
 
 
 
