@@ -32,7 +32,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/artist")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ArtistController {
     @Autowired
     private ArtistService artistService;
@@ -41,7 +41,7 @@ public class ArtistController {
     private ArtworkService artworkService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<HttpResponse> registerArtist(@RequestBody ArtistRequest artistRequest){
          Artist artist = artistService.register(artistRequest);
          return ResponseEntity.created(URI.create("")).body(
