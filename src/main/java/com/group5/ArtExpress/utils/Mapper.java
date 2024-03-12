@@ -49,7 +49,7 @@ public class Mapper {
         newComment.setCollectorId(foundCollector.getId());
         newComment.setArtworkId(foundArtwork.getArtworkId());
         newComment.setCommentMessage(commentRequest.getComment());
-        newComment.setDateTime(LocalDate.now());
+        newComment.setDateTime(LocalDateTime.now());
 
 
         return newComment;
