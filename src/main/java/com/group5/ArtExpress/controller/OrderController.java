@@ -48,8 +48,8 @@ public class OrderController {
 
         @GetMapping("/order/user")
         public ResponseEntity<HttpResponse>   getOrderHistory(@RequestHeader Long collectorId) {
-        Collector collector = collectorService.findById(collectorId);
-        List<Order> order = orderService.getUserOrder(collector.getId());
+            Collector collector = collectorService.findById(collectorId);
+            List<Order> order = orderService.getUserOrder(collector.getId());
             return ResponseEntity.created(URI.create("")).body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())
@@ -59,6 +59,25 @@ public class OrderController {
                             .statusCode(HttpStatus.CREATED.value())
                             .build()
             );
-    }
+        }
+
+
+            @DeleteMapping("/order/cancel/{id}")
+
+            public ResponseEntity<HttpResponse> cancelOrder(@PathVariable Long id,
+                                                            @RequestHeader Long collectorId){
+                Collector collector = collectorService.findById(collectorId);
+                orderService.cancelOrder(id);
+                return ResponseEntity.created(URI.create("")).body(
+                        HttpResponse.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("OrderHistory", "canceled"))
+                                .message("List of order history")
+                                .status(HttpStatus.CREATED)
+                                .statusCode(HttpStatus.CREATED.value())
+                                .build()
+                );
+
+            }
 
 }

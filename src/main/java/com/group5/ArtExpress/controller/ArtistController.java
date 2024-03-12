@@ -40,7 +40,7 @@ public class ArtistController {
     private ArtworkService artworkService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<HttpResponse> registerArtist(@RequestBody ArtistRequest artistRequest){
          Artist artist = artistService.register(artistRequest);
          return ResponseEntity.created(URI.create("")).body(
