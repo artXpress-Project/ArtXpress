@@ -32,7 +32,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/artist")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ArtistController {
     @Autowired
     private ArtistService artistService;
