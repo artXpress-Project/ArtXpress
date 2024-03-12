@@ -3,7 +3,6 @@ package com.group5.ArtExpress.service;
 import com.group5.ArtExpress.customException.ArtworkNotFoundException;
 import com.group5.ArtExpress.customException.GenreDoesNotExistException;
 import com.group5.ArtExpress.customException.IdNotFoundException;
-import com.group5.ArtExpress.customException.NoListOfArtworkWithThatParticularGenre;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Artwork;
 import com.group5.ArtExpress.data.models.Collector;
@@ -44,7 +43,7 @@ public class ArtworkServiceImpl implements ArtworkService{
         artwork.setArtist(artist);
         artwork.setEmail(artist.getEmail());
         artwork.setUploadDateTime(LocalDateTime.now());
-        artwork.setUploadDateTime(LocalDate.now());
+
 
 
         return artworkRepository.save(artwork);
@@ -61,7 +60,7 @@ public class ArtworkServiceImpl implements ArtworkService{
         if(artwork.getSize() != null) artwork.setSize(update.getSize());
         Genre genre = genreRepo.findGenreByGenreName(update.getGenre().getGenreName());
         if(genre != null) artwork.setGenre(update.getGenre());
-        artwork.setUploadDateTime(LocalDate.now());
+        artwork.setUploadDateTime(LocalDateTime.now());
         return artworkRepository.save(artwork);
 
     }

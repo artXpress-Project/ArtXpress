@@ -53,7 +53,7 @@ public class Artwork {
     private boolean available;
 
     @Column(nullable = true, name="uploadDateTime")
-    private LocalDate uploadDateTime;
+    private LocalDateTime uploadDateTime;
 
     @Column(length = 1000)
     @ElementCollection

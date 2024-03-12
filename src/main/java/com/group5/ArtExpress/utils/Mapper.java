@@ -32,7 +32,7 @@ public class Mapper {
         artist.setLocked(true);
         artist.setDateTime(LocalDateTime.now());
 
-        artist.setDateTime(LocalDate.now());
+
 
         artist.setArtworks(new ArrayList<>());
     }
@@ -46,10 +46,10 @@ public class Mapper {
 //        newComment.setArtworkId(foundArtwork.getArtworkId());
         newComment.setCommentMessage(commentRequest.getMessage());
         newComment.setDateTime(LocalDateTime.now());
-        newComment.setCollectorId(foundCollector.getCollectorId());
+        newComment.setCollectorId(foundCollector.getId());
         newComment.setArtworkId(foundArtwork.getArtworkId());
         newComment.setCommentMessage(commentRequest.getComment());
-        newComment.setDateTime(LocalDate.now());
+        newComment.setDateTime(LocalDateTime.now());
 
 
         return newComment;

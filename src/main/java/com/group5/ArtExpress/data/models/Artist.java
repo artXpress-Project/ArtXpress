@@ -48,7 +48,7 @@ public class Artist extends User {
     private boolean isEnabled;
 
     @Column(nullable = false, name = "dateTime")
-    private LocalDate dateTime;
+    private LocalDateTime dateTime;
 
     @Column(nullable = false, name = "isLocked")
     private boolean isLocked;

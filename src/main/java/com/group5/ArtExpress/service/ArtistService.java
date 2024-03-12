@@ -34,7 +34,6 @@ public interface ArtistService {
 
     List<Artwork> findArtWorkByArtist(Long artistId);
 
-    UpdateUploadResponse getArtwork(long l);
 
     Artwork findArtworkById(Long artworkId);
 

@@ -16,11 +16,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long commentId;
 
-//    @Column(nullable = false, name="collectorId")
-//    private Long collectorId;
-//
-//    @Column(nullable = false, name="aetworkId")
-//    private Long artworkId;
+    @Column(nullable = false, name="collectorId")
+    private Long collectorId;
+
+    @Column(nullable = false, name="aetworkId")
+    private Long artworkId;
 
     @ManyToOne
     private Artwork artwork;
@@ -32,6 +32,6 @@ public class Comment {
 
     private LocalDateTime dateTime;
 
-    private LocalDate dateTime;
+
 
 }

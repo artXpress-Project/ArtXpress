@@ -79,15 +79,6 @@ public class CommentServiceImpl implements CommentService{
         commentRepo.save(foundComment);
     }
 
-//    @Override
-//    public CommentRequest createComment(CommentRequest request,Long artistId) {
-//        Artwork artwork = artworkService.findArtWorkById(artistId);
-//        Comment comment = modelMapper.map(request,Comment.class );
-//        comment.setDateTime(LocalDateTime.now());
-//        comment.setArtwork(artwork);
-//        Comment savedComment = commentRepo.save(comment);
-//        return modelMapper.map(savedComment, CommentRequest.class);
-//    }
 
     @Override
     public void deleteComment(Long commentId) {
