@@ -124,79 +124,6 @@ public class ArtistServiceImpl implements ArtistService{
                                             401);
     }
 
-//    @Override
-//    public UpdateArtworkResponse updateUpload(Long artworkId, UpdateUploadRequest request) {
-//        ObjectMapper mapper = new ObjectMapper();
-//        List<JsonPatchOperation> operations = new ArrayList<>(buildJsonPatchOperations(request));
-//
-//        JsonPatch updatePatch = new JsonPatch(operations);
-//
-//        Artwork foundArtwork = artworkRepository.findById(artworkId)
-//                                .orElseThrow(()-> getArtworkNotFoundException(artworkId));
-//
-//        JsonNode artworkNode = mapper.convertValue(foundArtwork, JsonNode.class);
-//        JsonNode updatedNode = applyPatch(updatePatch, artworkNode);
-//
-//        var updatedArtwork = mapper.convertValue(updatedNode, Artwork.class);
-//        artworkRepository.save(updatedArtwork);
-//        return new UpdateArtworkResponse("Artwork details updated successfully", "201");
-//    }
-//
-//    private JsonNode applyPatch(JsonPatch updatePatch, JsonNode artworkNode) {
-//        try {
-//            JsonNode updatedNode = updatePatch.apply(artworkNode);
-//            return updatedNode;
-//        } catch (JsonPatchException exception) {
-//            throw new RuntimeException(exception.getMessage());
-//        }
-//    }
-//
-//    private ArtworkNotFoundException getArtworkNotFoundException(Long artworkId) {
-//        return new ArtworkNotFoundException(
-//                String.format("Artwork with id %d not found", artworkId)
-//        );
-//    }
-//
-//    private List<ReplaceOperation> buildJsonPatchOperations(UpdateUploadRequest request) {
-//        Field[] fields = request.getClass().getDeclaredFields();
-//        return stream(fields).filter((field)-> isFieldNonNull(request, field))
-//                .map((field)-> buildReplaceOperation(request, field))
-//                .toList();
-//    }
-//
-//    private static ReplaceOperation buildReplaceOperation(UpdateUploadRequest request, Field field) {
-//        String path = "/";
-//        try {
-//            if (field.getName().equals("businessName")) {
-//                path += "artist/";
-//            } else if (field.getName().equals("genreName")) {
-//                path += "genre/";
-//            }
-//
-//            return new ReplaceOperation(new JsonPointer(path),
-//                    new TextNode(String.valueOf(field.get(request))));
-//        } catch (JsonPointerException | IllegalAccessException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    private boolean isFieldNonNull(UpdateUploadRequest request, Field field) {
-//        try {
-//            field.setAccessible(true);
-//            return field.get(request) != null;
-//        } catch (IllegalAccessException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    @Override
-//    public UpdateUploadResponse getArtwork(long artworkId) {
-//        Artwork foundArtwork = artworkRepository.findById(artworkId)
-//                .orElseThrow(()-> new ArtworkNotFoundException(
-//                        String.format("Artwork with id %d not found", artworkId)
-//                ));
-//        return buildArtworkResponse(foundArtwork);
-//    }
 
     @Override
     public Artwork uploadArtworkByAnArtist(ArtworkRequest request, Artist artist) {
@@ -255,19 +182,7 @@ public class ArtistServiceImpl implements ArtistService{
                 orElseThrow(()-> new IdNotFoundException("Id " + artworkId + " Does not Exist"));
     }
 
-//    private UpdateUploadResponse buildArtworkResponse(Artwork foundArtwork) {
-//        UpdateUploadResponse response = new UpdateUploadResponse();
-//        response.setArtist(foundArtwork.getArtist().getBusinessName());
-//        response.setPrice(foundArtwork.getPrice());
-//        response.setDescription(foundArtwork.getDescription());
-//        response.setGenre(foundArtwork.getGenre().getGenreName());
-//        response.setMedium(foundArtwork.getMedium());
-//        response.setSize(foundArtwork.getSize());
-//        response.setTitle(foundArtwork.getTitle());
-////        response.setUploadDateTime(foundArtwork.getUploadDateTime());
-//
-//        return response;
-//    }
+
 
 
     @Override
