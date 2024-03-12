@@ -2,6 +2,7 @@ package com.group5.ArtExpress.emailService;
 
 import com.group5.ArtExpress.customException.CouldNotFindEmailException;
 import com.group5.ArtExpress.customException.EmailAlreadyExistException;
+import com.group5.ArtExpress.customException.LockException;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.data.models.ExhibitionEventRegistration;

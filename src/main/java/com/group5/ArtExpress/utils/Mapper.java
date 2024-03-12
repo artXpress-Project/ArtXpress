@@ -21,9 +21,13 @@ public class Mapper {
         Location location = new Location();
         location.setState(request.getState());
         location.setLga(request.getLga());
+        location.setCountry(request.getCountry());
+        location.setCity(request.getCity());
         location.setAddress(request.getAddress());
         artist.setLocation(location);
         artist.setEnabled(false);
+        artist.setProfileImages(request.getProfileImages());
+        artist.setLocked(true);
         artist.setDateTime(LocalDateTime.now());
         artist.setArtworks(new ArrayList<>());
     }
@@ -32,9 +36,9 @@ public class Mapper {
 
     public static Comment mapComment(CommentRequest commentRequest, Collector foundCollector, Artwork foundArtwork) {
         Comment newComment = new Comment();
-        newComment.setCollectorId(foundCollector.getCollectorId());
-        newComment.setArtworkId(foundArtwork.getArtworkId());
-        newComment.setCommentMessage(commentRequest.getComment());
+//        newComment.setCollectorId(foundCollector.getCollectorId());
+//        newComment.setArtworkId(foundArtwork.getArtworkId());
+        newComment.setCommentMessage(commentRequest.getMessage());
         newComment.setDateTime(LocalDateTime.now());
 
         return newComment;

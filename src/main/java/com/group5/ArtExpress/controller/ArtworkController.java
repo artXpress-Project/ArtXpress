@@ -21,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/artwork")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ArtworkController {
     @Autowired
     private ArtworkService artworkService;
@@ -82,7 +83,7 @@ public class ArtworkController {
     @GetMapping("/artist")
     public ResponseEntity<HttpResponse> findArtworkByArtistId( @RequestHeader Long id){
         Artist artist = artistService.findArtistById(id);
-        Artwork artwork = artworkService.findArtWorkByArtist(artist.getId());
+        List<Artwork> artwork = artworkService.findArtWorkByArtist(artist.getId());
         return ResponseEntity.ok()
                 .body(HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
@@ -95,6 +96,7 @@ public class ArtworkController {
 
 
     }
+
     @GetMapping("/artist/id")
     public ResponseEntity <HttpResponse> getAllUploadedArtwork(@RequestHeader Long id){
         Artist artist = artistService.findArtistById(id);
@@ -124,11 +126,10 @@ public class ArtworkController {
                         .statusCode(HttpStatus.OK.value())
                         .build());
     }
-    @GetMapping("/artwork/search/")
-    public ResponseEntity<HttpResponse> searchArtworkByGenre(@RequestParam("genreName") String genreName) {
-        Genre genre = genreRepo.findGenreByGenreName(genreName);
+    @GetMapping("/artwork/search/{genreName}")
+    public ResponseEntity<HttpResponse> searchArtworkByGenre(@PathVariable String genreName) {
         System.out.println(genreName);
-        List<Artwork> artworkList = artworkService.searchArtwork(genre.getGenreName());
+        List<Artwork> artworkList = artworkService.searchArtwork(genreName);
         return ResponseEntity.ok()
                 .body(HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())

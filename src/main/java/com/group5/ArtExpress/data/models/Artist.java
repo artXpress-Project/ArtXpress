@@ -1,11 +1,13 @@
 package com.group5.ArtExpress.data.models;
 
+import com.group5.ArtExpress.confirmation.ArtistConfirmation;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -38,7 +40,7 @@ public class Artist extends User {
     private Location location;
 
     @Column(nullable = true, name = "artworks")
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Artwork> artworks;
 
     @Column(nullable = false, name = "isEnabled")
@@ -50,7 +52,19 @@ public class Artist extends User {
     @Column(nullable = false, name = "isLocked")
     private boolean isLocked;
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private ArtistConfirmation artistConfirmation;
+
     private String twitter;
     private String linkDn;
     private String instagram;
+
+    @ElementCollection
+    @Column(length = 1000)
+    private List<String> profileImages ;
+
+    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
+
 }

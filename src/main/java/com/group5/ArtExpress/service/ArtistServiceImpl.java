@@ -1,29 +1,13 @@
 package com.group5.ArtExpress.service;
 
-
-
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.github.fge.jackson.jsonpointer.JsonPointer;
-import com.github.fge.jackson.jsonpointer.JsonPointerException;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
-import com.github.fge.jsonpatch.JsonPatchOperation;
-import com.github.fge.jsonpatch.ReplaceOperation;
 import com.group5.ArtExpress.customException.*;
 
 import com.group5.ArtExpress.data.models.Artwork;
-import com.group5.ArtExpress.data.models.Genre;
 
 import com.group5.ArtExpress.data.models.*;
 
 import com.group5.ArtExpress.dto.requestDto.*;
 import com.group5.ArtExpress.dto.responseDto.*;
-
-//import com.group5.ArtExpress.dto.requestDto.SendMailRequest;
-//import com.group5.ArtExpress.emailService.BrevoMailService;
 
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
@@ -35,19 +19,16 @@ import com.group5.ArtExpress.repository.*;
 import com.group5.ArtExpress.repository.ArtistConfirmationRepo;
 import com.group5.ArtExpress.repository.ArtistRepo;
 import com.group5.ArtExpress.repository.ArtworkRepository;
-import com.group5.ArtExpress.repository.GenreRepository;
+
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Optional;
 import java.util.List;
 
 import static com.group5.ArtExpress.utils.Mapper.map;
-import static java.util.Arrays.stream;
+
 
 @Service
 public class ArtistServiceImpl implements ArtistService{
@@ -67,14 +48,14 @@ public class ArtistServiceImpl implements ArtistService{
     @Autowired
     private ArtistConfirmationRepo artistConfirmationRepo;
 
+
     @Autowired
     private EmailVerificationService emailVerificationService;
 
     @Autowired
     private ArtworkRepository artworkRepository;
 
-    @Autowired
-    private GenreRepository genreRepository;
+
     @Autowired
     private CommentService commentService;
 
@@ -113,9 +94,10 @@ public class ArtistServiceImpl implements ArtistService{
     @Override
     public MessageResponse login(LoginRequest loginRequest) {
         Artist artist = emailVerificationService.findArtistEmail(loginRequest.getEmail());
+        artist.setLocked(false);
         if(artist.getPassword().equals(loginRequest.getPassword())){
-            if(artist.isEnabled()) {
-                artist.setLocked(false);
+            if(artist.isEnabled() ) {
+                artistRepo.save(artist);
                 return new MessageResponse("Login successful.",
                                            200);
             }
@@ -130,59 +112,11 @@ public class ArtistServiceImpl implements ArtistService{
 
     }
 
-//    public UploadArtResponse uploadArt(UploadArtRequest uploadArtRequest) {
-//        Optional<Artist> foundArtist = artistRepo.findByBusinessName(uploadArtRequest.getArtist());
-//        if (foundArtist.isEmpty()) throw new ArtistNotFoundException("Artist not found!");
-//
-//        boolean isUnlocked = !foundArtist.get().isLocked();
-//
-//        if (foundArtist.get().isEnabled() && isUnlocked) {
-//            Artwork artwork = getArtwork(uploadArtRequest, foundArtist);
-//            artworkRepository.save(artwork);
-//            return getUploadArtResponse(artwork);
-//        }
-//        throw new ArtistNotEnabled("Not enabled");
-//    }
-
-//    private static UploadArtResponse getUploadArtResponse(Artwork artwork) {
-//        UploadArtResponse uploadArtResponse = new UploadArtResponse();
-//        uploadArtResponse.setMessage("Upload successful");
-//        uploadArtResponse.setStatusCode(200);
-//       uploadArtResponse.setUploadDateTime(artwork.getUploadDateTime());
-//
-//        return uploadArtResponse;
-//    }
-
-//    private Artwork getArtwork(UploadArtRequest uploadArtRequest, Optional<Artist> foundArtist) {
-//        Genre genre = getGenre(uploadArtRequest);
-//        Artwork artwork = new Artwork();
-//        artwork.setArtist(foundArtist.get());
-//        mapArtwork(uploadArtRequest, artwork, genre);
-//        return artwork;
-//    }
-
-//    private Genre getGenre(UploadArtRequest uploadArtRequest) {
-//        Genre genre = new Genre();
-//        genre.setGenreName(uploadArtRequest.getGenre());
-//        genreRepository.save(genre);
-//        return genre;
-//    }
-
-//    private static void mapArtwork(UploadArtRequest uploadArtRequest, Artwork artwork, Genre genre) {
-//        artwork.setTitle(uploadArtRequest.getTitle());
-//        artwork.setDescription(uploadArtRequest.getDescription());
-//        artwork.setMedium(uploadArtRequest.getMedium());
-//        artwork.setPrice(uploadArtRequest.getPrice());
-//        artwork.setSize(uploadArtRequest.getSize());
-//        artwork.setGenre(genre);
-//        artwork.setUploadDateTime(LocalDateTime.now());
-////        artwork.setImage(uploadArtRequest.getImageLink());
-//    }
 
     public MessageResponse logout(LogoutRequest logoutRequest) {
         Artist artist = emailVerificationService.findArtistEmail(logoutRequest.getEmail());
+        artist.setLocked(true);
             if(artist.isEnabled()) {
-                artist.setLocked(true);
                 artistRepo.save(artist);
                 return new MessageResponse("Logout successful",
                                         200);
@@ -266,11 +200,8 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public Artwork uploadArtworkByAnArtist(ArtworkRequest request, Artist artist) {
-        if (artist != null && artist.isEnabled() && !artist.isLocked()) {
+            isArtistValid(request.getEmail());
             return artworkService.uploadArtwork(request, artist);
-        }else throw new LockException("is locked");
-
-
     }
 
 
@@ -278,17 +209,50 @@ public class ArtistServiceImpl implements ArtistService{
 
     @Override
     public Artwork updateArtworkByAnArtist(Long id, ArtworkRequest update) {
-        return null;
+        isArtistValid(update.getEmail());
+            return artworkService.updateArtwork(id,update);
+    }
+
+    private void isArtistValid(String email) {
+        Artist artist = artistRepo.findByEmailIgnoreCase(email);
+        if(artist == null){
+            throw new CouldNotFindEmailException("email does not exist");
+        }if(artist.isLocked()){
+            throw new LockException("artist is Locked");
+        }if(!artist.isEnabled()) {
+            throw new NotEnabledException("Artist must be enabled");
+        }
     }
 
     @Override
     public MessageResponse deleteArtworkByAnArtist(Long artWorkId) {
+            return artworkService.deleteArtwork(artWorkId);
+        }
+
+
+    @Override
+    public List<Artwork> findArtWorkByArtist(Long artistId) {
+            return artworkService.findArtWorkByArtist(artistId);
+        }
+
+
+    @Override
+    public UpdateUploadResponse getArtwork(long l) {
         return null;
     }
 
+
+
+
+
+
+
+
+
     @Override
-    public Artwork findArtWorkByArtist(Long artistId) {
-        return null;
+    public Artwork findArtworkById(Long artworkId) {
+        return artworkRepository.findById(artworkId).
+                orElseThrow(()-> new IdNotFoundException("Id " + artworkId + " Does not Exist"));
     }
 
 //    private UpdateUploadResponse buildArtworkResponse(Artwork foundArtwork) {
@@ -306,32 +270,6 @@ public class ArtistServiceImpl implements ArtistService{
 //    }
 
 
-
-
-
-
-
-    @Override
-    public Artwork findArtworkById(Long artworkId) {
-        return artworkRepository.findById(artworkId).
-                orElseThrow(()-> new IdNotFoundException("Id " + artworkId + " Does not Exist"));
-    }
-
-    private UpdateUploadResponse buildArtworkResponse(Artwork foundArtwork) {
-        UpdateUploadResponse response = new UpdateUploadResponse();
-        response.setArtist(foundArtwork.getArtist().getBusinessName());
-        response.setPrice(foundArtwork.getPrice());
-        response.setDescription(foundArtwork.getDescription());
-        response.setGenre(foundArtwork.getGenre().getGenreName());
-        response.setMedium(foundArtwork.getMedium());
-        response.setSize(foundArtwork.getSize());
-        response.setTitle(foundArtwork.getTitle());
-//        response.setUploadDateTime(foundArtwork.getUploadDateTime());
-
-        return response;
-    }
-
-
     @Override
     public ReplyCommentResponse replyComment(long commentId, ReplyCommentRequest replyComment) {
         Comment foundComment = commentService.findById(commentId);
@@ -343,6 +281,13 @@ public class ArtistServiceImpl implements ArtistService{
         replyCommentResponse.setResponseMessage(replyComment.getCommentReply());
 
         return replyCommentResponse;
+    }
+
+    @Override
+    public MessageResponse deleteArtist(Long id) {
+       Artist artist = artistRepo.findById(id).orElseThrow(()-> new ArtworkNotFoundException("Artist not found"));
+        artistRepo.delete(artist);
+        return new MessageResponse("Deleted Successfully",  200);
     }
 
 }

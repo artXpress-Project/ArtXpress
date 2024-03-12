@@ -16,7 +16,9 @@ public interface CommentService {
 
     Long count();
 
-    Comment findById(long commentId);
+    Comment findById(Long commentId);
 
     void save(Comment foundComment);
+//    CommentRequest createComment(CommentRequest request, Long artistId);
+    void deleteComment(Long commentId);
 }

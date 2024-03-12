@@ -1,5 +1,6 @@
 package com.group5.ArtExpress.data.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +17,18 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String address;
+
+    @JsonIgnore
+    @ManyToOne
+    private Artist artist;
     private Long totalAmount;
     @ManyToOne
     private Collector collector;
     private String orderStatus;
     private Date createdAt;
-    private int totalItem;
-    private int totalPrice;
+    @ManyToOne
+    private DeliveryAddress deliveryAddresses;
+    private Long totalPrice;
     @OneToMany
     private List<OrderItem> items;
 }

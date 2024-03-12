@@ -10,8 +10,6 @@ import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.dto.requestDto.*;
 
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
-import com.group5.ArtExpress.dto.responseDto.UpdateArtworkResponse;
-import com.group5.ArtExpress.dto.responseDto.UploadArtResponse;
 import com.group5.ArtExpress.http.HttpResponse;
 
 
@@ -20,6 +18,7 @@ import com.group5.ArtExpress.http.HttpResponse;
 
 
 import com.group5.ArtExpress.service.ArtistService;
+import com.group5.ArtExpress.service.ArtworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +27,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/artist")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ArtistController {
     @Autowired
     private ArtistService artistService;
+
+    @Autowired
+    private ArtworkService artworkService;
 
 
     @PostMapping
@@ -87,28 +91,7 @@ public class ArtistController {
         }
      }
 
-//    @PostMapping("/uploads")
-//    public ResponseEntity<HttpResponse> uploadArtwork(@RequestBody UploadArtRequest uploadArtRequest) {
-//         UploadArtResponse uploadArtResponse = artistService.uploadArt(uploadArtRequest);
-//         try {
-//             return ResponseEntity.ok().body(
-//                     HttpResponse.builder()
-//                             .timeStamp(LocalDateTime.now().toString())
-//                             .data(Map.of(uploadArtResponse.getMessage(), uploadArtResponse.getStatusCode()))
-//                             .build()
-//             );
-//         } catch (Exception e) {
-//             return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-//                     .body(
-//                             HttpResponse.builder()
-//                                     .timeStamp(LocalDateTime.now().toString())
-//                                     .data(Map.of("Media type unsupported", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
-//                                     .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-//                                     .statusCode(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
-//                                     .build()
-//                     );
-//         }
-//    }
+
 
      @PostMapping("/logout")
      public ResponseEntity<HttpResponse> logout(@RequestBody LogoutRequest logoutRequest){
@@ -122,21 +105,7 @@ public class ArtistController {
      }
 
 
-//    @PatchMapping("/update/{artworkId}")
-//    public ResponseEntity<HttpResponse> updateUpload(@PathVariable Long artworkId, UpdateUploadRequest request) {
-//        UpdateArtworkResponse response = artistService.updateUpload(artworkId, request);
-//
-//        return ResponseEntity.ok().body(
-//                HttpResponse.builder()
-//                        .timeStamp(LocalDateTime.now().toString())
-//                        .data(Map.of(response.getMessage(), response.getStatusCode()))
-//                        .build()
-//        );
 
-
-
-
-//    }
     @PostMapping("/upload")
     public ResponseEntity<HttpResponse> uploadArtworkByAnArtist(@RequestBody ArtworkRequest artworkRequest,
                                                                 @RequestHeader Long id){
@@ -154,5 +123,68 @@ public class ArtistController {
 
     }
 
+    @PostMapping("/update/{artworkId}")
+    public ResponseEntity<HttpResponse> updateArtworkByAnArtist(@PathVariable Long artworkId,
+                                                                @RequestBody ArtworkRequest artworkRequest,
+                                                                @RequestHeader Long id){
+        Artist artist = artistService.findArtistById(id);
+        Artwork artwork = artistService.updateArtworkByAnArtist(artworkId,artworkRequest);
+        return ResponseEntity.created(URI.create("")).body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("updated", artwork))
+                        .message("Artwork updated successfully")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+
+    }
+    @DeleteMapping("/deleted/{artworkId}")
+    public ResponseEntity<HttpResponse> deleteArtwork(@PathVariable Long artworkId
+                                                      ){
+        MessageResponse artwork = artistService.deleteArtworkByAnArtist(artworkId);
+        return ResponseEntity.created(URI.create("")).body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("updated", artwork))
+                        .message("deleted successfully")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+
+    }
+    @GetMapping("/artist")
+    public ResponseEntity<HttpResponse> findArtworkByArtistId( @RequestHeader Long id){
+        List<Artwork> artwork = artistService.findArtWorkByArtist(id);
+        return ResponseEntity.ok()
+                .body(HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("found", artwork))
+                        .message("Found successfully")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+
+
+
+    }
+
+    @PutMapping("/{artworkId}")
+    public ResponseEntity<HttpResponse> updateArtworkAvailability(@PathVariable Long artworkId,
+                                                                  @RequestHeader Long artistId
+                                                                  ) {
+        Artist artist = artistService.findArtistById(artistId);
+        Artwork artwork = artworkService.updateAvailabilityStatus(artworkId);
+        return ResponseEntity.ok()
+                .body(HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .data(Map.of("found", artwork))
+                        .message("Found successfully")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .build());
+    }
 
     }
