@@ -21,6 +21,9 @@ public class Order {
     @JsonIgnore
     @ManyToOne
     private Artist artist;
+    private Long orderId;
+    private String address;
+
     private Long totalAmount;
     @ManyToOne
     private Collector collector;

@@ -163,18 +163,6 @@ public class ArtistServiceImpl implements ArtistService{
         }
 
 
-    @Override
-    public UpdateUploadResponse getArtwork(long l) {
-        return null;
-    }
-
-
-
-
-
-
-
-
 
     @Override
     public Artwork findArtworkById(Long artworkId) {

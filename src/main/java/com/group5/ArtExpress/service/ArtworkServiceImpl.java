@@ -3,7 +3,6 @@ package com.group5.ArtExpress.service;
 import com.group5.ArtExpress.customException.ArtworkNotFoundException;
 import com.group5.ArtExpress.customException.GenreDoesNotExistException;
 import com.group5.ArtExpress.customException.IdNotFoundException;
-import com.group5.ArtExpress.customException.NoListOfArtworkWithThatParticularGenre;
 import com.group5.ArtExpress.data.models.Artist;
 import com.group5.ArtExpress.data.models.Artwork;
 import com.group5.ArtExpress.data.models.Collector;
@@ -17,6 +16,7 @@ import com.group5.ArtExpress.repository.GenreRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +43,8 @@ public class ArtworkServiceImpl implements ArtworkService{
         artwork.setArtist(artist);
         artwork.setEmail(artist.getEmail());
         artwork.setUploadDateTime(LocalDateTime.now());
+
+
 
         return artworkRepository.save(artwork);
     }
