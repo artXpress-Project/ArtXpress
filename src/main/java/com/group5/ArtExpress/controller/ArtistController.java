@@ -32,7 +32,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/artist")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "")
 public class ArtistController {
     @Autowired
     private ArtistService artistService;

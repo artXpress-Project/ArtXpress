@@ -38,11 +38,11 @@ public class EmailVerificationService {
     }
 
     public void ifArtistEmailAlreadyExist(String email){
-        if (collectorRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
+        if (artistRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
     }
 
     public void ifCollectorEmailAlreadyExist(String email){
-       if(artistRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
+       if(collectorRepo.existsByEmail(email)) throw new EmailAlreadyExistException("Email already exist");
     }
 
     public void ifExhibitionUserEmailAlreadyExist(String email){
