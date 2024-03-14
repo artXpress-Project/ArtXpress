@@ -37,7 +37,7 @@ public class CollectorController {
     private ArtworkService artworkService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<HttpResponse> registerUser(@RequestBody CollectorRequest collectorRequest){
         Collector newCollector = collectorService.registerCollector(collectorRequest);
         return ResponseEntity.created(URI.create("")).body(
@@ -172,6 +172,7 @@ public class CollectorController {
                         .statusCode(HttpStatus.OK.value())
                         .build());
     }
+
 
 
 

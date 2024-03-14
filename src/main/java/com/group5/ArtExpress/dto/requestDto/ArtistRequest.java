@@ -17,7 +17,7 @@ public class ArtistRequest {
     private String businessName;
     private String bio;
     private String phoneNumber;
-    private State state;
+    private String state;
     private String lga;
     private String address;
     private List<Artwork> artworks;

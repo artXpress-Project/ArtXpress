@@ -14,7 +14,7 @@ public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
             .allowedOrigins("*")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-            .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization");
+            .allowedHeaders("Origin", "Content-Type", "Accept", "Authorization","id");
 //                .allowCredentials(true)
 //                .maxAge(3600);
 }

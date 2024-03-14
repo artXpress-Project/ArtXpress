@@ -24,8 +24,10 @@ public class Collector extends User {
     @Column(nullable = false, name="phoneNumber")
     private String phoneNumber;
 
+    @ElementCollection
+    @Column(length = 1000)
+    private List<String> profileImages = new ArrayList<>();
 
-    @Column(nullable = false, name="dateTime")
     private LocalDate dateTime;
 
     @Column(nullable = false, name="isEnabled")
@@ -38,9 +40,14 @@ public class Collector extends User {
     private List<DeliveryAddress> addresses = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collector")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "collector",orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
     @ElementCollection
     private List<ArtworkDto>favourite = new ArrayList<>();
+
+
+
+
+
 }

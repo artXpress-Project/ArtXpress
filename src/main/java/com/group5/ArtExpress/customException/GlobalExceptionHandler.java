@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistException.class)
     public Map<String, String> emailAlreadyExistException(EmailAlreadyExistException exception){
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("Error message is ", exception.getMessage());
+        errorMap.put("ErrorMessage",exception.getMessage());
         return errorMap;
 
     }
@@ -32,14 +32,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoListOfEnabledAttendeesFound.class)
     public Map<String,String> noListOfEnabledAttendeesException(NoListOfEnabledAttendeesFound noEnabledAttendees){
         Map<String,String> errorMap = new HashMap<>();
-        errorMap.put("error message is ", noEnabledAttendees.getMessage());
+        errorMap.put("ErrorMessage", noEnabledAttendees.getMessage());
         return errorMap;
 
     }
     @ExceptionHandler(TokenWasNotFoundException.class)
     public Map<String, String> tokenWasNotFoundException(TokenWasNotFoundException exception){
         Map<String,String> erroMap = new HashMap<>();
-        erroMap.put("error message is ",exception.getMessage());
+        erroMap.put("ErrorMessage",exception.getMessage());
         return erroMap;
 
     }
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("Comment Exception", exception.getMessage()))
+                        .data(Map.of("ErrorMessage", exception.getMessage()))
                         .message("Bad request")
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("Id Exception", exception.getMessage()))
+                        .data(Map.of("ErrorMessage", exception.getMessage()))
                         .message("Does not exist")
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -74,7 +74,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("Artwork Exception", exception.getMessage()))
+                        .data(Map.of("ErrorMessage", exception.getMessage()))
                         .message("Does not exist")
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok().body(
                 HttpResponse.builder()
                         .timeStamp(LocalDateTime.now().toString())
-                        .data(Map.of("Artwork Exception", exception.getMessage()))
+                        .data(Map.of("ErrorMessage", exception.getMessage()))
                         .message("Does not exist")
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())

@@ -62,7 +62,7 @@ public class Artist extends User {
 
     @ElementCollection
     @Column(length = 1000)
-    private List<String> profileImages ;
+    private List<String> profileImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
