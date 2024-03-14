@@ -75,7 +75,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         artist.setLocked(true);
         Artist newArtist = artistService.register(artistRequest);
         assertNotNull(newArtist);
@@ -96,7 +96,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         artist.setLocked(true);
         Artist artist1 = artistService.register(artistRequest);
         assertNotNull(artist1);
@@ -121,7 +121,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         artist.setLocked(true);
         Artist artist1 = artistService.register(artistRequest);
         assertNotNull(artist1);
@@ -144,7 +144,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         Artist artist1 = artistService.register(artistRequest);
         assertNotNull(artist1);
         loginRequest.setPassword("john");
@@ -167,7 +167,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         Artist artist1 = artistService.register(artistRequest);
         assertNotNull(artist1);
         loginRequest.setPassword("johns");
@@ -190,7 +190,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         Artist artist1 = artistService.register(artistRequest);
         assertNotNull(artist1);
         assertThrows(CouldNotFindEmailException.class, () -> emailVerificationService.findArtistEmail("jayson@gmail.com"));
@@ -210,7 +210,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         Artist artist1 = artistService.register(artistRequest);
         assertNotNull(artist1);
         artistRequest.setPhoneNumber("081486611023");
@@ -224,7 +224,7 @@ public class ArtistServiceTest {
         artistRequest.setArtworks(new ArrayList<>());
         artistRequest.setBio("BIO");
         artistRequest.setDateTime(LocalDateTime.now());
-        artistRequest.setState(State.ANAMBRA);
+        artistRequest.setState("Anambra");
         assertThrows(DataIntegrityViolationException.class, () -> artistService.register(artistRequest));
 
     }

@@ -59,9 +59,4 @@ public class Artwork {
     @ElementCollection
     private List<String> images;
 
-
-
-
-
-
 }

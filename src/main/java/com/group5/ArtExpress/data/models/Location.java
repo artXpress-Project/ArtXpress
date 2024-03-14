@@ -9,8 +9,8 @@ import lombok.Data;
 public class Location {
 
     @Column(nullable = false, name="state")
-    @Enumerated(EnumType.STRING)
-    private State state;
+//    @Enumerated(EnumType.STRING)
+    private String state;
 
     @Column(nullable = false, name="lga")
     private String lga;

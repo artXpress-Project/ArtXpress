@@ -25,7 +25,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/collector")
-@CrossOrigin(origins = "http://localhost:3000")
 public class CollectorController {
     @Autowired
     private CollectorService collectorService;
@@ -37,7 +36,7 @@ public class CollectorController {
     private ArtworkService artworkService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<HttpResponse> registerUser(@RequestBody CollectorRequest collectorRequest){
         Collector newCollector = collectorService.registerCollector(collectorRequest);
         return ResponseEntity.created(URI.create("")).body(

@@ -19,6 +19,7 @@ import com.group5.ArtExpress.http.HttpResponse;
 
 import com.group5.ArtExpress.service.ArtistService;
 import com.group5.ArtExpress.service.ArtworkService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/v1/artist")
 public class ArtistController {
     @Autowired
@@ -40,8 +42,9 @@ public class ArtistController {
     private ArtworkService artworkService;
 
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<HttpResponse> registerArtist(@RequestBody ArtistRequest artistRequest){
+        log.info(String.valueOf(artistRequest));
          Artist artist = artistService.register(artistRequest);
          return ResponseEntity.created(URI.create("")).body(
                  HttpResponse.builder()

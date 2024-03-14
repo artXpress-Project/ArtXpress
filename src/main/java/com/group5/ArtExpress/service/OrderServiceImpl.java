@@ -8,6 +8,7 @@ import com.group5.ArtExpress.repository.CollectorRepo;
 import com.group5.ArtExpress.repository.OrderItemRepository;
 import com.group5.ArtExpress.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
