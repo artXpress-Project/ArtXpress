@@ -48,8 +48,8 @@ public class OrderController {
 
         @GetMapping("/order/user")
         public ResponseEntity<HttpResponse>   getOrderHistory(@RequestHeader Long collectorId) {
-            Collector collector = collectorService.findById(collectorId);
-            List<Order> order = orderService.getUserOrder(collector.getId());
+        Collector collector = collectorService.findById(collectorId);
+        List<Order> order = orderService.getUserOrder(collector.getId());
             return ResponseEntity.created(URI.create("")).body(
                     HttpResponse.builder()
                             .timeStamp(LocalDateTime.now().toString())

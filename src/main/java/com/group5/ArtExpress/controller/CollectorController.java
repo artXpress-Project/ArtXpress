@@ -25,7 +25,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/collector")
-@CrossOrigin(origins = "http://localhost:3000")
 public class CollectorController {
     @Autowired
     private CollectorService collectorService;
@@ -172,7 +171,6 @@ public class CollectorController {
                         .statusCode(HttpStatus.OK.value())
                         .build());
     }
-
 
 
 

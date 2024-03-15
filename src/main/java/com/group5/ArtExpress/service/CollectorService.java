@@ -30,6 +30,4 @@ public interface CollectorService {
 
 
 
-
-
 }

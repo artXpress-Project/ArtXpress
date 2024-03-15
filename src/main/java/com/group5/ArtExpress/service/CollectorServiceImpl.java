@@ -4,13 +4,16 @@ package com.group5.ArtExpress.service;
 import com.group5.ArtExpress.customException.ActionForbiddenAttempt;
 import com.group5.ArtExpress.customException.IdNotFoundException;
 import com.group5.ArtExpress.customException.LockException;
-import com.group5.ArtExpress.data.models.*;
+import com.group5.ArtExpress.data.models.Artist;
+import com.group5.ArtExpress.data.models.Artwork;
+import com.group5.ArtExpress.data.models.Cart;
 import com.group5.ArtExpress.dto.responseDto.MessageResponse;
 import com.group5.ArtExpress.emailService.EmailService;
 import com.group5.ArtExpress.emailService.EmailVerificationService;
 import com.group5.ArtExpress.confirmation.CollectorConfirmation;
 import com.group5.ArtExpress.customException.TokenWasNotFoundException;
 
+import com.group5.ArtExpress.data.models.Collector;
 import com.group5.ArtExpress.dto.requestDto.CollectorRequest;
 import com.group5.ArtExpress.dto.requestDto.LoginRequest;
 import com.group5.ArtExpress.repository.CartRepository;
@@ -24,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,14 +39,13 @@ public class CollectorServiceImpl implements CollectorService{
     private CollectorRepo collectorRepo;
 
     @Autowired
-    private CartRepository cartRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CartRepository cartRepository;
 
     @Autowired
     private EmailVerificationService emailVerificationService;
@@ -57,18 +58,9 @@ public class CollectorServiceImpl implements CollectorService{
     public Collector registerCollector(CollectorRequest collectorRequest) {
         emailVerificationService.ifCollectorEmailAlreadyExist(collectorRequest.getEmail());
         emailVerificationService.verifyEmailFormat(collectorRequest.getEmail());
-        DeliveryAddress address = new DeliveryAddress();
-        address.setCity(collectorRequest.getCity());
-        address.setCountry(collectorRequest.getCountry());
-        address.setStreetAddress(collectorRequest.getStreetAddress());
-        address.setPostalCode(collectorRequest.getPostalCode());
-        address.setStateProvince(collectorRequest.getStateProvince());
         Collector collector = modelMapper.map(collectorRequest, Collector.class);
 //        String encodedPassword = passwordEncoder.encode(collectorRequest.getPassword());
 //        collector.setPassword(encodedPassword);
-        List<DeliveryAddress> addresses = new ArrayList<>();
-        addresses.add(address);
-        collector.setAddresses(addresses);
         collector.setEnabled(false);
         collector.setDateTime(LocalDate.now());
         Collector collects = collectorRepo.save(collector);

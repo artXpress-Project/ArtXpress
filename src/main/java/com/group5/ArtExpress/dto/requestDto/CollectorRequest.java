@@ -15,11 +15,7 @@ public class CollectorRequest {
     private String email;
     private String password;
     private String phoneNumber;
-    private String streetAddress;
-    private String country;
-    private String city;
-    private String stateProvince;
-    private String postalCode;
+    private String address;
     private LocalDateTime dateTime;
     private boolean isEnabled;
     private List<DeliveryAddress> addresses = new ArrayList<>();
